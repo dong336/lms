@@ -1,13 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-  <title>Home</title>
-  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
-  <link th:href="@{/main.css}" rel="stylesheet" type="text/css"/>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{/fragments/head.html :: page_head('LMS 홈')}">
 </head>
-<body class="bg-blue-500">
-  <header class="bg-white container mx-auto">
-    <h1 class="text-4xl font-bold p-8">Home Page</h1>
-  </header>
+<body>
+  <div id="app">
+      <div th:replace="~{/fragments/navbar.html :: navbar}"></div>
+  </div>
 </body>
 </html>
