@@ -8,15 +8,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Slf4j
 @Controller
-@RequestMapping()
 @RequiredArgsConstructor
 public class HomeController {
 
     @GetMapping("/")
-    public String index() { return "index.html"; }
+    public String blank() { return "fo/index"; }
+
+    @GetMapping("/login")
+    public String login() { return "fo/login"; }
+
+    @GetMapping("/index")
+    public String index() { return "redirect:/"; }
 
     @GetMapping("/home")
     public String home() {
-        return "home.html";
+        return "redirect:/";
     }
 }
