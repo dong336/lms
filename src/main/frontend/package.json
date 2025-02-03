@@ -4,12 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "tailwindcss -i ./style.css -o ../resources/static/main.css",
-    "watch": "tailwindcss --watch -i ./style.css -o ../resources/static/main.css"
+    "build": "npx @tailwindcss/cli -i ./input.css -o ../resources/static/css/output.css --watch",
+    "watch": "npx tailwindcss -i ./input.css -o ../resources/static/css/output.css --watch"
   },
   "author": "dwkim",
   "license": "ISC",
-  "devDependencies": {
-    "tailwindcss": "^3.4.6"
+  "dependencies": {
+    "@tailwindcss/cli": "^4.0.3",
+    "tailwindcss": "^4.0.3"
   }
 }
