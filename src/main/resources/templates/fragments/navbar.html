@@ -1,60 +1,19 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
-<style>
-    @theme {
-    /* light theme */
-    --color-surface: var(--color-white);
-    --color-surface-alt: var(--color-neutral-50);
-    --color-on-surface: var(--color-neutral-600);
-    --color-on-surface-strong: var(--color-neutral-900);
-    --color-primary: var(--color-black);
-    --color-on-primary: var(--color-neutral-100);
-    --color-secondary: var(--color-neutral-800);
-    --color-on-secondary: var(--color-white);
-    --color-outline: var(--color-neutral-300);
-    --color-outline-strong: var(--color-neutral-800);
-
-    /* dark theme */
-    --color-surface-dark: var(--color-neutral-950);
-    --color-surface-dark-alt: var(--color-neutral-900);
-    --color-on-surface-dark: var(--color-neutral-300);
-    --color-on-surface-dark-strong: var(--color-white);
-    --color-primary-dark: var(--color-white);
-    --color-on-primary-dark: var(--color-black);
-    --color-secondary-dark: var(--color-neutral-300);
-    --color-on-secondary-dark: var(--color-black);
-    --color-outline-dark: var(--color-neutral-700);
-    --color-outline-dark-strong: var(--color-neutral-300);
-
-    /* shared colors */
-    --color-info: var(--color-sky-500);
-    --color-on-info: var(--color-white);
-    --color-success: var(--color-green-500);
-    --color-on-success: var(--color-white);
-    --color-warning: var(--color-amber-500);
-    --color-on-warning: var(--color-white);
-    --color-danger: var(--color-red-500);
-    --color-on-danger: var(--color-white);
-
-    /* border radius */
-    --radius-radius: var(--radius-sm);
-}
-</style>
-
 <div th:fragment="navbar">
     <nav x-data="{ mobileMenuIsOpen: false }" x-on:click.away="mobileMenuIsOpen = false" class="flex items-center justify-between bg-surface-alt border-b border-outline px-6 py-4 dark:border-outline-dark dark:bg-surface-dark-alt" aria-label="penguin ui menu">
         <!-- Brand Logo -->
         <a href="#" class="text-2xl font-bold text-on-surface-strong dark:text-on-surface-dark-strong">
-            <span>LMS<span class="text-primary dark:text-primary-dark"></span></span>
+            <span>Peng<span class="text-primary dark:text-primary-dark">ui</span>n</span>
             <!-- <img src="./your-logo.svg" alt="brand logo" class="w-10" /> -->
         </a>
         <!-- Desktop Menu -->
         <ul class="hidden items-center gap-4 md:flex">
-            <li><a href="#" class="font-medium text-on-surface underline-offset-2 hover:text-primary focus:outline-hidden focus:underline dark:text-on-surface-dark dark:hover:text-primary-dark">기업소개</a></li>
-            <li><a href="#" class="font-medium text-on-surface underline-offset-2 hover:text-primary focus:outline-hidden focus:underline dark:text-on-surface-dark dark:hover:text-primary-dark">교육과정</a></li>
-            <li><a href="#" class="font-medium text-on-surface underline-offset-2 hover:text-primary focus:outline-hidden focus:underline dark:text-on-surface-dark dark:hover:text-primary-dark">이용안내</a></li>
-            <li><a href="#" class="font-bold text-primary underline-offset-2 hover:text-primary focus:outline-hidden focus:underline dark:text-primary-dark dark:hover:text-primary-dark" aria-current="page">Login</a></li>
+            <li><a href="#" class="font-bold text-primary underline-offset-2 hover:text-primary focus:outline-hidden focus:underline dark:text-primary-dark dark:hover:text-primary-dark" aria-current="page">Products</a></li>
+            <li><a href="#" class="font-medium text-on-surface underline-offset-2 hover:text-primary focus:outline-hidden focus:underline dark:text-on-surface-dark dark:hover:text-primary-dark">Pricing</a></li>
+            <li><a href="#" class="font-medium text-on-surface underline-offset-2 hover:text-primary focus:outline-hidden focus:underline dark:text-on-surface-dark dark:hover:text-primary-dark">Blog</a></li>
+            <li><a href="#" class="font-medium text-on-surface underline-offset-2 hover:text-primary focus:outline-hidden focus:underline dark:text-on-surface-dark dark:hover:text-primary-dark">Login</a></li>
         </ul>
         <!-- Mobile Menu Button -->
         <button x-on:click="mobileMenuIsOpen = !mobileMenuIsOpen" x-bind:aria-expanded="mobileMenuIsOpen" x-bind:class="mobileMenuIsOpen ? 'fixed top-6 right-6 z-20' : null" type="button" class="flex text-on-surface dark:text-on-surface-dark md:hidden" aria-label="mobile menu" aria-controls="mobileMenu">

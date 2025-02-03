@@ -4,13 +4,15 @@
 3. MySQL
 4. Mybatis
 5. Thymeleaf
-6. Tailwind css
+6. Tailwindcss
+7. Alpinejs
 
 ### 개발 환경 참고사항
 1. node 22 설치
-2. spring-boot-devtools IDE 환경에 맞게 적용 추천
 2. 터미널 src/main/frontend 경로에서 npm i 실행 &rarr; node_modules 구성
 3. 터미널 src/main/frontend 경로에서 npm run watch 실행 &rarr; 타임리프에 tailwindcss 실시간 적용
+4. spring-boot-devtools IDE 환경에 맞게 적용 (권장)
+5. ui 개발 시 www.penguinui.com (https://github.com/SalarHoushvand/penguin-ui-components/tree/main/tailwind-v3) 참고 (권장)
 
 ### 배포
 1. ./mvnw clean package
