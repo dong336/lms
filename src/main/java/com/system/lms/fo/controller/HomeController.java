@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequiredArgsConstructor
 public class HomeController {
 
-    @GetMapping("/")
-    public String blank() { return "fo/index"; }
-
     @GetMapping("/login")
     public String login() { return "fo/login"; }
+
+    @GetMapping("/")
+    public String blank() { return "fo/index"; }
 
     @GetMapping("/index")
     public String index() { return "redirect:/"; }
