@@ -31,7 +31,11 @@ public class GoogleOauth2Controller {
                 .queryParam("client_id", env.googleClientId)
                 .queryParam("redirect_uri", redirectUri)
                 .queryParam("response_type", "code")
-                .queryParam("scope", "email profile")
+                .queryParam("scope",
+                        "https://www.googleapis.com/auth/userinfo.profile" +
+                        " https://www.googleapis.com/auth/userinfo.email")
+//                        " https://www.googleapis.com/auth/user.birthday.read"
+//                        " https://www.googleapis.com/auth/user.gender.read"
                 .queryParam("access_type", "offline")
                 .queryParam("prompt", "select_account")
                 .build()

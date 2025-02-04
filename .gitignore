@@ -34,3 +34,6 @@ build/
 
 ### Frontend ###
 /src/main/frontend/node_modules/
+
+### key ###
+/src/main/resources/key.properties

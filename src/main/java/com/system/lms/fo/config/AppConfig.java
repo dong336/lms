@@ -1,6 +1,5 @@
-package com.system.lms.config;
+package com.system.lms.fo.config;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 

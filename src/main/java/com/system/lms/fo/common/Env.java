@@ -5,9 +5,13 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class Env {
+
     @Value("${google.clientId}")
     public String googleClientId;
 
     @Value("${google.clientSecret}")
     public String googleClientSecret;
+
+    @Value("${jwt.base.key}")
+    public String jwtKey;
 }
