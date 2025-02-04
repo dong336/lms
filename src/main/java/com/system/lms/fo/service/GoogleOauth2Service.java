@@ -1,6 +1,7 @@
 package com.system.lms.fo.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.system.lms.fo.common.Env;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
@@ -8,34 +9,41 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class AuthService {
+public class GoogleOauth2Service {
 
+    public final static String redirectUri = "http://localhost:8080/auth/login/google/callback";
+
+    private final Env env;
     private final RestTemplate restTemplate;
 
-    public void loginGoogle(String code) {
+    public String loginGoogle(String code) {
         String accessToken = requestGoogleAccessToken(code);
-          // 로그아웃 개발하고 주석 해제
-//        JsonNode userResourceNode = getUserResource(accessToken);
-//        log.info("userResourceNode : {}", userResourceNode);
-//
-//        String id = userResourceNode.get("id").asText();
-//        String email = userResourceNode.get("email").asText();
-//        String nickname = userResourceNode.get("name").asText();
-//
-//        log.info("id : {}", id);
-//        log.info("email : {}", email);
-//        log.info("nickname : {}", nickname);
+        log.debug("accessToken : {}", accessToken);
+
+        // 로그아웃 개발하고 주석 해제
+        JsonNode userResourceNode = getUserResource(accessToken);
+        log.debug("userResourceNode : {}", userResourceNode);
+
+        String id = userResourceNode.get("id").asText();
+        String email = userResourceNode.get("email").asText();
+        String nickname = userResourceNode.get("name").asText();
+
+        log.debug("id : {}", id);
+        log.debug("email : {}", email);
+        log.debug("nickname : {}", nickname);
+
+        return accessToken;
     }
 
     private String requestGoogleAccessToken(String code) {
         try {
-            String clientId = ""; // 클라이언트 ID
-            String clientSecret = ""; // 클라이언트 보안 패스워드
-            String redirectUri = "http://localhost:8080/auth/google/callback";
+            String clientId = env.googleClientId; // 클라이언트 ID
+            String clientSecret = env.googleClientSecret; // 클라이언트 보안 패스워드
             String tokenUri = "https://oauth2.googleapis.com/token";
 
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
@@ -69,5 +77,24 @@ public class AuthService {
         HttpEntity entity = new HttpEntity(headers);
 
         return restTemplate.exchange(resourceUri, HttpMethod.GET, entity, JsonNode.class).getBody();
+    }
+
+    public void removeAccessToken(String accessToken) {
+        try {
+            String tokenUri = UriComponentsBuilder.fromUriString("https://oauth2.googleapis.com/revoke")
+                    .queryParam("token", accessToken)
+                    .toUriString();
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+            HttpEntity entity = new HttpEntity(headers);
+
+            ResponseEntity<JsonNode> responseNode = restTemplate.exchange(tokenUri, HttpMethod.POST, entity, JsonNode.class);
+
+            log.info("logout res node : {}", responseNode);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
