@@ -11,9 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequiredArgsConstructor
 public class HomeController {
 
-    @GetMapping("/login")
-    public String login() { return "fo/login"; }
-
     @GetMapping("/")
     public String blank() { return "fo/index"; }
 

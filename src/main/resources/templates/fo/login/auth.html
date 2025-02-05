@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{/fo/fragments/head.html :: page_head('로그인 인증')}">
+</head>
+<body>
+<div class="flex flex-col items-center h-screen w-full">
+  <div class="mt-16">
+    <h2 class="font-bold">인증코드가 메일로 발송 되었습니다.</h2>
+  </div>
+  <div class="mt-2">
+    <h2 class="font-bold">인증코드를 입력해주세요.</h2>
+  </div>
+  <div class="mt-2">
+    <div class="py-2 px-3 bg-white border border-gray-200 rounded-lg dark:bg-neutral-900 dark:border-neutral-700">
+      <div class="flex gap-x-5" data-hs-pin-input="">
+        <input type="text" class="pin-input no-spinner border block size-[38px] text-center border-gray-200 rounded-md text-sm placeholder:text-gray-300 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" data-hs-pin-input-item="" autofocus="">
+        <input type="text" class="pin-input no-spinner border block size-[38px] text-center border-gray-200 rounded-md text-sm placeholder:text-gray-300 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" data-hs-pin-input-item="">
+        <input type="text" class="pin-input border block size-[38px] text-center border-gray-200 rounded-md text-sm placeholder:text-gray-300 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" data-hs-pin-input-item="">
+        <input type="text" class="pin-input border block size-[38px] text-center border-gray-200 rounded-md text-sm placeholder:text-gray-300 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" data-hs-pin-input-item="">
+        <input type="text" class="pin-input border block size-[38px] text-center border-gray-200 rounded-md text-sm placeholder:text-gray-300 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" data-hs-pin-input-item="">
+        <input type="text" class="pin-input border block size-[38px] text-center border-gray-200 rounded-md text-sm placeholder:text-gray-300 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" data-hs-pin-input-item="">
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  const pinInputs = document.querySelectorAll('.pin-input');
+
+  pinInputs.forEach((input, index) => {
+    input.addEventListener('input', (event) => {
+      const currentInput = event.target;
+      currentInput.value = currentInput.value.replace(/[^0-9]/g, '');
+
+      if (currentInput.value.length === 1 && index < pinInputs.length - 1) {
+        const nextInput = pinInputs[index + 1];
+        if (nextInput) {
+          nextInput.focus();
+        }
+      }
+    });
+
+    input.addEventListener('paste', (event) => {
+      const pasteData = event.clipboardData.getData('text');
+      const filteredPasteData = pasteData.replace(/[^0-9]/g, '');
+
+      for (let i = 0; i < filteredPasteData.length; i++) {
+        const currentInput = pinInputs[i];
+        if (currentInput) {
+          currentInput.value = filteredPasteData[i];
+        }
+      }
+
+      const lastInput = pinInputs[filteredPasteData.length - 1];
+      if (lastInput) {
+        lastInput.focus();
+      }
+
+      event.preventDefault();
+    });
+
+    input.addEventListener('keydown', (event) => {
+      if (event.key === 'Backspace' && input.value === '') {
+        const prevInput = pinInputs[index - 1];
+        if (prevInput) {
+          prevInput.focus();
+        }
+      }
+    });
+
+    if (index === pinInputs.length - 1) {
+      input.addEventListener('input', (event) => {
+        if (event.target.value.length > 1) {
+          event.target.value = event.target.value.substring(0, 1);
+        }
+      });
+
+      input.addEventListener('keydown', (event) => {
+        if (event.key !== 'Backspace' && input.value.length >= 1) {
+          event.preventDefault();
+        }
+      });
+    }
+  });
+</script>
+</body>
+</html>

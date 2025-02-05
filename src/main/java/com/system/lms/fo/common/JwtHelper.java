@@ -1,4 +1,4 @@
-package com.system.lms.fo.util;
+package com.system.lms.fo.common;
 
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +12,7 @@ import java.util.Map;
 
 @Slf4j
 @Component
-public class JwtUtil {
+public class JwtHelper {
 
     private static final String BASE_KEY = "JWT_SECRET_KEY";
     private static final SignatureAlgorithm SIGNATURE_ALGORITHM = SignatureAlgorithm.HS256;

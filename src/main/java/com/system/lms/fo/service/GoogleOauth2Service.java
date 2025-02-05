@@ -1,6 +1,7 @@
 package com.system.lms.fo.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.google.api.client.json.Json;
 import com.system.lms.fo.common.Env;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,8 +17,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 @RequiredArgsConstructor
 public class GoogleOauth2Service {
 
-    public final static String redirectUri = "http://localhost:8080/auth/login/google/callback";
-
     private final Env env;
     private final RestTemplate restTemplate;
 
@@ -27,7 +26,10 @@ public class GoogleOauth2Service {
 
         // 로그아웃 개발하고 주석 해제
         JsonNode userResourceNode = getUserResource(accessToken);
+//        JsonNode userInfoNode = getUserInfo(accessToken);
+
         log.debug("userResourceNode : {}", userResourceNode);
+//        log.debug("userInfoNode : {}", userInfoNode);
 
         String id = userResourceNode.get("id").asText();
         String email = userResourceNode.get("email").asText();
@@ -51,7 +53,7 @@ public class GoogleOauth2Service {
             params.add("code", code);
             params.add("client_id", clientId);
             params.add("client_secret", clientSecret);
-            params.add("redirect_uri", redirectUri);
+            params.add("redirect_uri", env.googleRedirectUri);
             params.add("grant_type", "authorization_code");
 
             HttpHeaders headers = new HttpHeaders();
@@ -77,6 +79,16 @@ public class GoogleOauth2Service {
         HttpEntity entity = new HttpEntity(headers);
 
         return restTemplate.exchange(resourceUri, HttpMethod.GET, entity, JsonNode.class).getBody();
+    }
+
+    private JsonNode getUserInfo(String accessToken) {
+        String userInfoUri = "https://people.googleapis.com/v1/people/me?personFields=names,emailAddresses,photos,phoneNumbers";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + accessToken);
+        HttpEntity entity = new HttpEntity(headers);
+
+        return restTemplate.exchange(userInfoUri, HttpMethod.GET, entity, JsonNode.class).getBody();
     }
 
     public void removeAccessToken(String accessToken) {

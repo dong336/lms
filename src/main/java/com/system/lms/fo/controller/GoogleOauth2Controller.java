@@ -25,7 +25,7 @@ public class GoogleOauth2Controller {
 
     @GetMapping("/login/google")
     public void requestGoogleLogin(HttpServletResponse response, @RequestParam Map<String, Object> request) throws IOException {
-        String redirectUri = GoogleOauth2Service.redirectUri;
+        String redirectUri = env.googleRedirectUri;
 
         String url = UriComponentsBuilder.fromUriString("https://accounts.google.com/o/oauth2/auth")
                 .queryParam("client_id", env.googleClientId)
@@ -33,7 +33,11 @@ public class GoogleOauth2Controller {
                 .queryParam("response_type", "code")
                 .queryParam("scope",
                         "https://www.googleapis.com/auth/userinfo.profile" +
-                        " https://www.googleapis.com/auth/userinfo.email")
+                        " https://www.googleapis.com/auth/userinfo.email" +
+                        " https://www.googleapis.com/auth/contacts.readonly")
+                /*
+                 * 개인정보 응답 받기 옵션
+                 */
 //                        " https://www.googleapis.com/auth/user.birthday.read"
 //                        " https://www.googleapis.com/auth/user.gender.read"
                 .queryParam("access_type", "offline")
@@ -56,7 +60,7 @@ public class GoogleOauth2Controller {
 
         Cookie cookie = new Cookie("accessToken", accessToken);
 
-        cookie.setMaxAge(300);
+        cookie.setMaxAge(30000);
         cookie.setPath("/");
 
         response.addCookie(cookie);

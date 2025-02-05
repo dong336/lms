@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{/fo/fragments/head.html :: page_head('LMS 교육과정')}">
+</head>
+<body>
+<div id="app">
+    <div th:replace="~{/fo/fragments/navbar.html :: navbar}"></div>
+
+    <div class="lg:pl-60 lg:pr-60">
+        <p th:text="${common_fullPath}"></p>
+
+        <div th:replace="~{/fo/fragments/footer.html :: footer}"></div>
+    </div>
+</div>
+</body>
+</html>

@@ -4,21 +4,21 @@
 <div th:fragment="navbar">
     <nav x-data="{ mobileMenuIsOpen: false }" x-on:click.away="mobileMenuIsOpen = false" class="flex items-center justify-between border-b border-outline px-6 py-4 dark:border-outline-dark" aria-label="penguin ui menu">
         <!-- Brand Logo -->
-        <a href="#" class="lg:pl-60 text-2xl font-bold text-on-surface-strong dark:text-on-surface-dark-strong">
+        <a href="/" class="lg:pl-60 text-2xl font-bold text-on-surface-strong dark:text-on-surface-dark-strong">
             <span>LM<span class="text-primary dark:text-primary-dark">S</span></span>
             <!-- <img src="./your-logo.svg" alt="brand logo" class="w-10" /> -->
         </a>
         <!-- Desktop Menu -->
         <ul class="lg:pr-60 hidden items-center gap-4 md:flex">
             <!--<li><a href="#" class="font-bold text-primary underline-offset-2 hover:text-primary focus:outline-hidden focus:underline dark:text-primary-dark dark:hover:text-primary-dark" aria-current="page">기업소개</a></li>-->
-            <li><a href="#" class="font-medium text-on-surface underline-offset-2 hover:text-primary focus:outline-hidden focus:underline dark:text-on-surface-dark dark:hover:text-primary-dark">기업소개</a></li>
-            <li><a href="#" class="font-medium text-on-surface underline-offset-2 hover:text-primary focus:outline-hidden focus:underline dark:text-on-surface-dark dark:hover:text-primary-dark">교육과정</a></li>
-            <li><a href="#" class="font-medium text-on-surface underline-offset-2 hover:text-primary focus:outline-hidden focus:underline dark:text-on-surface-dark dark:hover:text-primary-dark">이용안내</a></li>
+            <li><a th:href="@{/intro}" class="font-medium text-on-surface underline-offset-2 hover:text-primary focus:outline-hidden focus:underline dark:text-on-surface-dark dark:hover:text-primary-dark">기업소개</a></li>
+            <li><a th:href="@{/courses}" class="font-medium text-on-surface underline-offset-2 hover:text-primary focus:outline-hidden focus:underline dark:text-on-surface-dark dark:hover:text-primary-dark">교육과정</a></li>
+            <li><a th:href="@{/about}" class="font-medium text-on-surface underline-offset-2 hover:text-primary focus:outline-hidden focus:underline dark:text-on-surface-dark dark:hover:text-primary-dark">이용안내</a></li>
             <li th:if="${isLogin == false}">
-                <a th:href="@{/login}" class="font-medium text-on-surface underline-offset-2 hover:text-primary focus:outline-hidden focus:underline dark:text-on-surface-dark dark:hover:text-primary-dark">Login</a>
+                <a th:href="@{/login}" class="font-medium text-on-surface underline-offset-2 hover:text-primary focus:outline-hidden focus:underline dark:text-on-surface-dark dark:hover:text-primary-dark">로그인</a>
             </li>
             <li th:if="${isLogin == true}" th:attr="onclick='logout(event);'">
-                <a href="#" class="font-medium text-on-surface underline-offset-2 hover:text-primary focus:outline-hidden focus:underline dark:text-on-surface-dark dark:hover:text-primary-dark">Logout</a>
+                <a href="#" class="font-medium text-on-surface underline-offset-2 hover:text-primary focus:outline-hidden focus:underline dark:text-on-surface-dark dark:hover:text-primary-dark">로그아웃</a>
             </li>
         </ul>
         <!-- Mobile Menu Button -->
@@ -33,10 +33,15 @@
         <!-- Mobile Menu -->
         <ul x-cloak x-show="mobileMenuIsOpen" x-transition:enter="transition motion-reduce:transition-none ease-out duration-300" x-transition:enter-start="-translate-y-full" x-transition:enter-end="translate-y-0" x-transition:leave="transition motion-reduce:transition-none ease-out duration-300" x-transition:leave-start="translate-y-0" x-transition:leave-end="-translate-y-full" id="mobileMenu" class="fixed max-h-svh overflow-y-auto inset-x-0 top-0 z-10 flex flex-col divide-y divide-outline rounded-b-radius border-b border-outline bg-surface-alt px-6 pb-6 pt-20 dark:divide-outline-dark dark:border-outline-dark dark:bg-surface-dark-alt md:hidden">
             <!--<li class="py-4"><a href="#" class="w-full text-lg font-bold text-primary focus:underline dark:text-primary-dark" aria-current="page">Products</a></li>-->
-            <li class="py-4"><a href="#" class="w-full text-lg font-medium text-on-surface focus:underline dark:text-on-surface-dark">기업소개</a></li>
-            <li class="py-4"><a href="#" class="w-full text-lg font-medium text-on-surface focus:underline dark:text-on-surface-dark">교육과정</a></li>
-            <li class="py-4"><a href="#" class="w-full text-lg font-medium text-on-surface focus:underline dark:text-on-surface-dark">이용안내</a></li>
-            <li class="py-4"><a th:href="@{/login}" class="w-full text-lg font-medium text-on-surface focus:underline dark:text-on-surface-dark">Login</a></li>
+            <li class="py-4"><a th:href="@{/intro}" class="w-full text-lg font-medium text-on-surface focus:underline dark:text-on-surface-dark">기업소개</a></li>
+            <li class="py-4"><a th:href="@{/courses}" class="w-full text-lg font-medium text-on-surface focus:underline dark:text-on-surface-dark">교육과정</a></li>
+            <li class="py-4"><a th:href="@{/about}" class="w-full text-lg font-medium text-on-surface focus:underline dark:text-on-surface-dark">이용안내</a></li>
+            <li th:if="${isLogin == false}" class="py-4">
+              <a th:href="@{/login}" class="w-full text-lg font-medium text-on-surface focus:underline dark:text-on-surface-dark">로그인</a>
+            </li>
+            <li th:if="${isLogin == true}" class="py-4" th:attr="onclick='logout(event);'">
+              <a href="#" class="w-full text-lg font-medium text-on-surface focus:underline dark:text-on-surface-dark">로그아웃</a>
+            </li>
         </ul>
     </nav>
 </div>

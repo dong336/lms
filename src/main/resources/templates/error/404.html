@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{/fo/fragments/head.html :: page_head('LMS 홈')}">
+</head>
+<body>
+<div id="app">
+    <div th:replace="~{/fo/fragments/navbar.html :: navbar}"></div>
+</div>
+<div class="flex flex-col items-center h-screen w-full">
+    <div class="mt-16">
+        <button id="backBtn" type="button" class="whitespace-nowrap rounded-radius bg-surface-alt border border-surface-alt px-4 py-2 text-sm font-medium tracking-wide text-on-surface-strong transition hover:opacity-75 text-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-surface-alt active:opacity-100 active:outline-offset-0 disabled:opacity-75 dark:bg-surface-dark-alt dark:border-surface-dark-alt dark:text-on-surface-dark-strong dark:focus-visible:outline-surface-dark-alt cursor-pointer">
+            <span class="flex items-center justify-center">
+                뒤로가기
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="ml-2 size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+                </svg>
+            </span>
+        </button>
+    </div>
+    <div class="mt-4">
+        <h2 class="font-bold">요청에 해당하는 페이지를 찾을 수 없습니다.</h2>
+    </div>
+</div>
+<script>
+document.getElementById('backBtn').addEventListener('click', () => {
+    window.history.back();
+});
+</script>
+</body>
+</html>
