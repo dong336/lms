@@ -27,14 +27,14 @@ public class GoogleOauth2Controller {
     public void requestGoogleLogin(HttpServletResponse response, @RequestParam Map<String, Object> request) throws IOException {
         String redirectUri = env.googleRedirectUri;
 
-        String url = UriComponentsBuilder.fromUriString("https://accounts.google.com/o/oauth2/auth")
+        String url = UriComponentsBuilder.fromUriString(env.googleOauth2RequestUri)
                 .queryParam("client_id", env.googleClientId)
                 .queryParam("redirect_uri", redirectUri)
                 .queryParam("response_type", "code")
                 .queryParam("scope",
-                        "https://www.googleapis.com/auth/userinfo.profile" +
-                        " https://www.googleapis.com/auth/userinfo.email" +
-                        " https://www.googleapis.com/auth/contacts.readonly")
+                        env.googleReadScopeEmailUri + " " +
+                        env.googleReadScopeProfileUri + " " +
+                        env.googleReadScopeContactsUri)
                 /*
                  * 개인정보 응답 받기 옵션
                  */

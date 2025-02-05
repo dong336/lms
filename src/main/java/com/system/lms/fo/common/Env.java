@@ -23,4 +23,16 @@ public class Env {
 
     @Value("${jwt.base.key}")
     public String jwtKey;
+
+    @Value("${google.oauth2.request.uri}")
+    public String googleOauth2RequestUri;
+
+    @Value("${google.read.scope.profile.uri}")
+    public String googleReadScopeProfileUri;
+
+    @Value("${google.read.scope.email.uri}")
+    public String googleReadScopeEmailUri;
+
+    @Value("${google.read.scope.contacts.uri}")
+    public String googleReadScopeContactsUri;
 }
