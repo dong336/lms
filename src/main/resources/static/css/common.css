@@ -1,0 +1,5 @@
+.content {
+    display: flex;
+    justify-content: center; /* 가로축 가운데 정렬 */
+    height: 100vh;           /* 화면 전체 높이 */
+}

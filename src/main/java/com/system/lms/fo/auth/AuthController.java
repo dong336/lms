@@ -106,26 +106,35 @@ public class AuthController {
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             for (Cookie cookie : cookies) {
-                if ("jwtToken".equals(cookie.getName())) {
-                    String jwtToken = cookie.getValue();
+                switch (cookie.getName()) {
+                    case "JSESSIONID":
+                        // JSESSIONID 쿠키 삭제 처리
+                        cookie.setMaxAge(0);
+                        cookie.setPath("/");
+                        cookie.setHttpOnly(true);
+                        cookie.setSecure(false);
+                        response.addCookie(cookie);
+                        break;
 
-                    JwtCustomClaims customClaims = jwtHelper.getJwtClaims(jwtToken);
+                    case "jwtToken":
+                        String jwtToken = cookie.getValue();
+                        JwtCustomClaims customClaims = jwtHelper.getJwtClaims(jwtToken);
 
-                    if ("google".equals(customClaims.snsType())) {
-                        String accessToken = customClaims.accessToken();
-
-                        googleOauth2Service.removeAccessToken(accessToken);
-                    }
-                    // 쿠키 삭제 처리
-                    cookie.setMaxAge(0);
-                    cookie.setPath("/");
-                    cookie.setHttpOnly(true);
-                    cookie.setSecure(false);
-
-                    response.addCookie(cookie);
+                        if ("google".equals(customClaims.snsType())) {
+                            String accessToken = customClaims.accessToken();
+                            googleOauth2Service.removeAccessToken(accessToken);
+                        }
+                        // jwtToken 쿠키 삭제 처리
+                        cookie.setMaxAge(0);
+                        cookie.setPath("/");
+                        cookie.setHttpOnly(true);
+                        cookie.setSecure(false);
+                        response.addCookie(cookie);
+                        break;
                 }
             }
         }
+
 
         return "redirect:/";
     }
