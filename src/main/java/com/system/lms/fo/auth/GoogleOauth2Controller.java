@@ -5,6 +5,7 @@ import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -16,7 +17,7 @@ import java.util.Map;
 
 @Slf4j
 @Controller
-@RequestMapping("/auth")
+@RequestMapping("/auth/google")
 @RequiredArgsConstructor
 public class GoogleOauth2Controller {
 
@@ -24,7 +25,7 @@ public class GoogleOauth2Controller {
     private final JwtHelper jwtHelper;
     private final GoogleOauth2Service googleOauth2Service;
 
-    @GetMapping("/login/google")
+    @GetMapping("/login")
     public void requestGoogleLogin(HttpServletResponse response, @RequestParam Map<String, Object> request) throws IOException {
         String redirectUri = env.googleRedirectUri;
 
@@ -48,7 +49,7 @@ public class GoogleOauth2Controller {
         response.sendRedirect(url);
     }
 
-    @GetMapping("/login/google/callback")
+    @GetMapping("/login/callback")
     public String callbackGoogle(HttpServletResponse response, @RequestParam Map<String, Object> request) {
         log.debug("req : {}", request);
 
@@ -69,9 +70,23 @@ public class GoogleOauth2Controller {
         return "redirect:/";
     }
 
-    @GetMapping("/logout/google")
-    public String requestGoogleLogout(HttpServletRequest request) {
+    @GetMapping("/logout")
+    public String requestGoogleLogout(HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession(false); // 세션이 없다면 null
+        if (session != null) {
+            session.invalidate(); // 세션 무효화
+        }
+
         Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("JSESSIONID".equals(cookie.getName())) {
+                    cookie.setMaxAge(0);
+                    cookie.setPath("/");
+                    response.addCookie(cookie);
+                }
+            }
+        }
 
         if (cookies != null) {
             for (Cookie cookie : cookies) {
@@ -79,6 +94,11 @@ public class GoogleOauth2Controller {
                     String jwtToken = cookie.getValue();
 
                     cookie.setMaxAge(0);
+                    cookie.setPath("/");
+                    cookie.setHttpOnly(true);
+                    cookie.setSecure(false);
+
+                    response.addCookie(cookie);
 
                     Claims claims = jwtHelper.getJwtClaims(jwtToken);
 
