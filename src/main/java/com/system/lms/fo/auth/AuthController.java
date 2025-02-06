@@ -21,18 +21,19 @@ import java.util.Random;
 
 @Slf4j
 @Controller
-@RequestMapping("/login")
+@RequestMapping("/auth")
 @RequiredArgsConstructor
-public class LoginController {
+public class AuthController {
 
     private final JwtHelper jwtHelper;
 
     private final EmailValidator emailValidator;
     private final EmailSender emailSender;
 
-    private final LoginService loginService;
+    private final GoogleOauth2Service googleOauth2Service;
+    private final AuthService authService;
 
-    @GetMapping("/auth")
+    @GetMapping("/login")
     public String auth(@RequestParam Map<String, Object> param, HttpSession session, RedirectAttributes redirectAttributes) {
         String email = (String) param.get("email");
         String[] parts = email.split("@");
@@ -64,7 +65,7 @@ public class LoginController {
         String email = (String) session.getAttribute("email");
 
         if (pinNumber.equals(combinedNumber)) {
-            String jwtToken = jwtHelper.createJwt(Map.of("email", email));
+            String jwtToken = jwtHelper.createJwt(new JwtCustomClaims("none", email, ""));
 
             Cookie cookie = new Cookie("jwtToken", jwtToken);
 
@@ -94,6 +95,7 @@ public class LoginController {
         }
     }
 
+    // logout 은 공통으로 처리하며 claims 를 검사하여 분기 처리
     @GetMapping("/logout")
     public String logout(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession(false); // 세션이 없다면 null
@@ -105,6 +107,15 @@ public class LoginController {
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if ("jwtToken".equals(cookie.getName())) {
+                    String jwtToken = cookie.getValue();
+
+                    JwtCustomClaims customClaims = jwtHelper.getJwtClaims(jwtToken);
+
+                    if ("google".equals(customClaims.snsType())) {
+                        String accessToken = customClaims.accessToken();
+
+                        googleOauth2Service.removeAccessToken(accessToken);
+                    }
                     // 쿠키 삭제 처리
                     cookie.setMaxAge(0);
                     cookie.setPath("/");

@@ -24,17 +24,23 @@ public class JwtHelper {
         return signingKey;
     }
 
-    public String createJwt(Map<String, Object> customClaims) {
+    public String createJwt(JwtCustomClaims jwtCustomClaims) {
         Map<String, Object> headerMap = Map.of(
                 "typ", "JWT",
                 "alg", "HS256"
+        );
+
+        Map<String, Object> claims = Map.of(
+                "snsType", jwtCustomClaims.snsType(),
+                "email", jwtCustomClaims.email(),
+                "accessToken", jwtCustomClaims.accessToken()
         );
 
         Date expireTime = new Date(System.currentTimeMillis() + 60000 * 1000); // 1000분 후 만료
 
         return Jwts.builder()
                 .setHeader(headerMap)
-                .setClaims(customClaims)
+                .setClaims(claims)
                 .setExpiration(expireTime)
                 .signWith(createKey(), SIGNATURE_ALGORITHM)
                 .compact();
@@ -59,19 +65,24 @@ public class JwtHelper {
         return false;
     }
 
-    public Claims getJwtClaims(String jwt) {
+    public JwtCustomClaims getJwtClaims(String jwt) {
         try {
-            return Jwts.parserBuilder()
+            Claims claims = Jwts.parserBuilder()
                     .setSigningKey(Base64.getDecoder().decode(BASE_KEY))
                     .build()
                     .parseClaimsJws(jwt)
                     .getBody();
+
+            return new JwtCustomClaims(
+                    (String) claims.get("snsType"),
+                    (String) claims.get("email"),
+                    (String) claims.get("accessToken")
+            );
         } catch (ExpiredJwtException e) {
             log.info("Token expired");
         } catch (JwtException e) {
             log.warn("Invalid token");
         }
-
         throw new RuntimeException("JWT claims 를 얻을 수 없습니다.");
     }
 }

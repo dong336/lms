@@ -1,5 +1,6 @@
 package com.system.lms;
 
+import com.system.lms.fo.auth.JwtCustomClaims;
 import com.system.lms.fo.auth.JwtHelper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +18,8 @@ class LmsApplicationTests {
 
 	@Test
 	void contextLoads() {
-		Map request = Map.of("email", "mock123@test.com");
-		String jwtToken = jwtHelper.createJwt(request);
+		JwtCustomClaims customClaims = new JwtCustomClaims("", "email", "mock123@test.com");
+		String jwtToken = jwtHelper.createJwt(customClaims);
 		boolean isValid = jwtHelper.checkJwt(jwtToken);
 
 		assertTrue(isValid);

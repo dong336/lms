@@ -58,7 +58,10 @@ public class GoogleOauth2Controller {
         log.debug("code : {}", code);
 
         String accessToken = googleOauth2Service.loginGoogle(code);
-        String jwtToken = jwtHelper.createJwt(Map.of("accessToken", accessToken));
+
+        JwtCustomClaims customClaims = new JwtCustomClaims("google", "", accessToken);
+
+        String jwtToken = jwtHelper.createJwt(customClaims);
 
         Cookie cookie = new Cookie("jwtToken", jwtToken);
 
@@ -66,50 +69,6 @@ public class GoogleOauth2Controller {
         cookie.setPath("/");
 
         response.addCookie(cookie);
-
-        return "redirect:/";
-    }
-
-    @GetMapping("/logout")
-    public String requestGoogleLogout(HttpServletRequest request, HttpServletResponse response) {
-        HttpSession session = request.getSession(false); // 세션이 없다면 null
-        if (session != null) {
-            session.invalidate(); // 세션 무효화
-        }
-
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if ("JSESSIONID".equals(cookie.getName())) {
-                    cookie.setMaxAge(0);
-                    cookie.setPath("/");
-                    response.addCookie(cookie);
-                }
-            }
-        }
-
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if ("jwtToken".equals(cookie.getName())) {
-                    String jwtToken = cookie.getValue();
-
-                    cookie.setMaxAge(0);
-                    cookie.setPath("/");
-                    cookie.setHttpOnly(true);
-                    cookie.setSecure(false);
-
-                    response.addCookie(cookie);
-
-                    Claims claims = jwtHelper.getJwtClaims(jwtToken);
-
-                    String accessToken = (String) claims.get("accessToken");
-
-                    log.debug("accessToken : {}", accessToken);
-
-                    googleOauth2Service.removeAccessToken(accessToken);
-                }
-            }
-        }
 
         return "redirect:/";
     }
