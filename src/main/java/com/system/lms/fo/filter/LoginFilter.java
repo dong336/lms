@@ -16,19 +16,19 @@ public class LoginFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
-        String accessToken = "";
+        String jwtToken = "";
 
         Cookie[] cookies = request.getCookies();
 
         if (cookies != null) {
             for (Cookie cookie : cookies) {
-                if ("accessToken".equals(cookie.getName())) {
-                    accessToken = cookie.getValue();
+                if ("jwtToken".equals(cookie.getName())) {
+                    jwtToken = cookie.getValue();
                 }
             }
         }
 
-        if (accessToken.isEmpty()) {
+        if (jwtToken.isEmpty()) {
             request.setAttribute("isLogin", false);
         } else {
             request.setAttribute("isLogin", true);

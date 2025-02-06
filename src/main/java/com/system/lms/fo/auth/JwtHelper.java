@@ -1,4 +1,4 @@
-package com.system.lms.fo.common;
+package com.system.lms.fo.auth;
 
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +14,7 @@ import java.util.Map;
 @Component
 public class JwtHelper {
 
-    private static final String BASE_KEY = "JWT_SECRET_KEY";
+    private static final String BASE_KEY = "thisisdummykeythisisdummykeythisisdummykeythisisdummykeythisisdummykey";
     private static final SignatureAlgorithm SIGNATURE_ALGORITHM = SignatureAlgorithm.HS256;
 
     private Key createKey() {
@@ -24,22 +24,17 @@ public class JwtHelper {
         return signingKey;
     }
 
-    public String createJwt(Map<String, Object> request) {
+    public String createJwt(Map<String, Object> customClaims) {
         Map<String, Object> headerMap = Map.of(
                 "typ", "JWT",
                 "alg", "HS256"
         );
 
-        Map<String, Object> claims = Map.of(
-                "name", request.get("memberName"),
-                "id", request.get("memberId")
-        );
-
-        Date expireTime = new Date(System.currentTimeMillis() + 60 * 1000); // 1분 후 만료
+        Date expireTime = new Date(System.currentTimeMillis() + 60000 * 1000); // 1000분 후 만료
 
         return Jwts.builder()
                 .setHeader(headerMap)
-                .setClaims(claims)
+                .setClaims(customClaims)
                 .setExpiration(expireTime)
                 .signWith(createKey(), SIGNATURE_ALGORITHM)
                 .compact();
@@ -53,10 +48,8 @@ public class JwtHelper {
                     .parseClaimsJws(jwt)
                     .getBody();
 
-            log.debug("Id : {}", claims.get("id"));
-            log.debug("Name : {}", claims.get("name"));
+            log.debug("email : {}", claims.get("email"));
             return true;
-
         } catch (ExpiredJwtException e) {
             log.info("Token expired");
         } catch (JwtException e) {
@@ -64,5 +57,21 @@ public class JwtHelper {
         }
 
         return false;
+    }
+
+    public Claims getJwtClaims(String jwt) {
+        try {
+            return Jwts.parserBuilder()
+                    .setSigningKey(Base64.getDecoder().decode(BASE_KEY))
+                    .build()
+                    .parseClaimsJws(jwt)
+                    .getBody();
+        } catch (ExpiredJwtException e) {
+            log.info("Token expired");
+        } catch (JwtException e) {
+            log.warn("Invalid token");
+        }
+
+        throw new RuntimeException("JWT claims 를 얻을 수 없습니다.");
     }
 }

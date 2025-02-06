@@ -1,4 +1,4 @@
-package com.system.lms.fo.service;
+package com.system.lms.fo.auth;
 
 import com.system.lms.fo.client.EmailSender;
 import com.system.lms.fo.client.EmailValidator;

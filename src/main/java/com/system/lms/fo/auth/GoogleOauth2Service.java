@@ -1,4 +1,4 @@
-package com.system.lms.fo.service;
+package com.system.lms.fo.auth;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.api.client.json.Json;

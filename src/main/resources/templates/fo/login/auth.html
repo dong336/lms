@@ -26,6 +26,22 @@
 <script>
   const pinInputs = document.querySelectorAll('.pin-input');
 
+  function checkAndAuth() {
+    const allFilled = Array.from(pinInputs).every(input => input.value.trim() !== '');
+
+    if (allFilled) {
+      let combinedNumber = Array.from(pinInputs).map(input => input.value).join('');
+
+      console.log('모든 입력이 완료되었습니다.');
+
+      window.location.href = `/login/validate/${combinedNumber}`;
+    }
+  }
+
+  pinInputs.forEach(input => {
+      input.addEventListener('input', checkAndAuth);
+  });
+
   pinInputs.forEach((input, index) => {
     input.addEventListener('input', (event) => {
       const currentInput = event.target;
@@ -56,6 +72,8 @@
       }
 
       event.preventDefault();
+
+      checkAndAuth();
     });
 
     input.addEventListener('keydown', (event) => {

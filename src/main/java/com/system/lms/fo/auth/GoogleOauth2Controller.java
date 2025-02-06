@@ -1,7 +1,7 @@
-package com.system.lms.fo.controller;
+package com.system.lms.fo.auth;
 
 import com.system.lms.fo.common.Env;
-import com.system.lms.fo.service.GoogleOauth2Service;
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -21,6 +21,7 @@ import java.util.Map;
 public class GoogleOauth2Controller {
 
     private final Env env;
+    private final JwtHelper jwtHelper;
     private final GoogleOauth2Service googleOauth2Service;
 
     @GetMapping("/login/google")
@@ -33,8 +34,7 @@ public class GoogleOauth2Controller {
                 .queryParam("response_type", "code")
                 .queryParam("scope",
                         env.googleReadScopeEmailUri + " " +
-                        env.googleReadScopeProfileUri + " " +
-                        env.googleReadScopeContactsUri)
+                        env.googleReadScopeProfileUri)
                 /*
                  * 개인정보 응답 받기 옵션
                  */
@@ -57,8 +57,9 @@ public class GoogleOauth2Controller {
         log.debug("code : {}", code);
 
         String accessToken = googleOauth2Service.loginGoogle(code);
+        String jwtToken = jwtHelper.createJwt(Map.of("accessToken", accessToken));
 
-        Cookie cookie = new Cookie("accessToken", accessToken);
+        Cookie cookie = new Cookie("jwtToken", jwtToken);
 
         cookie.setMaxAge(30000);
         cookie.setPath("/");
@@ -74,10 +75,14 @@ public class GoogleOauth2Controller {
 
         if (cookies != null) {
             for (Cookie cookie : cookies) {
-                if ("accessToken".equals(cookie.getName())) {
-                    String accessToken = cookie.getValue();
+                if ("jwtToken".equals(cookie.getName())) {
+                    String jwtToken = cookie.getValue();
 
                     cookie.setMaxAge(0);
+
+                    Claims claims = jwtHelper.getJwtClaims(jwtToken);
+
+                    String accessToken = (String) claims.get("accessToken");
 
                     log.debug("accessToken : {}", accessToken);
 
@@ -89,3 +94,4 @@ public class GoogleOauth2Controller {
         return "redirect:/";
     }
 }
+
