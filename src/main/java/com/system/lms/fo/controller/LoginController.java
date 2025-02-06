@@ -26,7 +26,7 @@ public class LoginController {
     private final LoginService loginService;
 
     @GetMapping("/auth")
-    public String auth(@RequestParam Map<String, Object> param, RedirectAttributes redirectAttributes) {
+    public String auth(@RequestParam Map<String, Object> param, Model model, RedirectAttributes redirectAttributes) {
         String email = (String) param.get("email");
         String[] parts = email.split("@");
 
@@ -34,17 +34,19 @@ public class LoginController {
 
         if (isValid) {
             Random random = new Random();
-            int randomNumber = 100000 + random.nextInt(900000);
+            int pinNumber = 100000 + random.nextInt(900000);
 
-            String body = "안녕하세요. 회원인증 코드를 발송합니다.\n" + randomNumber;
+            String body = "안녕하세요. 회원인증 코드를 발송합니다.\n" + pinNumber;
 
             emailSender.sendMessage(email, "회원 인증코드입니다.", body);
+
+            model.addAttribute("pinNumber", pinNumber);
+
+            return "fo/login/auth";
         } else {
             redirectAttributes.addFlashAttribute("isInvalidEmail", true);
 
             return "redirect:/login";
         }
-
-        return "fo/login/auth";
     }
 }
