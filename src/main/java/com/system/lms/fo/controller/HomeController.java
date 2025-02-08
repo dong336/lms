@@ -30,7 +30,4 @@ public class HomeController {
     public String home() {
         return "redirect:/";
     }
-
-    @GetMapping("/blank")
-    public String blank_() { return "fo/blank"; }
 }

@@ -4,12 +4,14 @@
 </head>
 <body>
 <div id="app">
+
     <div th:replace="~{/fo/fragments/navbar.html :: navbar}"></div>
 
-    <div class="lg:pl-60 lg:pr-60">
+    <div class="lg:pl-80 lg:pr-80">
+        <p th:text="${commonUri}"></p>
+
         <div class="content">
             <div class="flex-grow">
-                <p th:text="${common_fullPath}"></p>
                 <div class="bg-primary shadow-2xl rounded-lg p-6">
                     <h1 class="text-xl text-white">이용안내</h1>
                 </div>
@@ -57,13 +59,11 @@
                     </table>
                 </div>
             </div>
-            </div>
         </div>
-    </div>
 
-    <div class="lg:pl-60 lg:pr-60">
         <div th:replace="~{/fo/fragments/footer.html :: footer}"></div>
     </div>
+
 </div>
 </body>
 </html>

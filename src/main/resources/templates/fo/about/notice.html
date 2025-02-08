@@ -4,12 +4,14 @@
 </head>
 <body>
 <div id="app">
+
     <div th:replace="~{/fo/fragments/navbar.html :: navbar}"></div>
 
-    <div class="lg:pl-60 lg:pr-60">
+    <div class="lg:pl-80 lg:pr-80">
+        <p th:text="${commonUri}"></p>
+
         <div class="content">
             <div class="flex-grow">
-                <p th:text="${common_fullPath}"></p>
                 <div class="bg-primary shadow-2xl rounded-lg p-6">
                     <h1 class="text-xl text-white">이용안내</h1>
                 </div>
@@ -29,6 +31,16 @@
 
                 <div class="relative overflow-x-auto">
                     <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <tr>
+                            <th scope="col" class="px-6 py-3">
+                                공지사항
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                조회수
+                            </th>
+                        </tr>
+                        </thead>
                         <tbody>
                         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
                             <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
@@ -59,12 +71,10 @@
                 </div>
             </div>
         </div>
-    </div>
-</div>
 
-<div class="lg:pl-60 lg:pr-60">
-    <div th:replace="~{/fo/fragments/footer.html :: footer}"></div>
-</div>
+        <div th:replace="~{/fo/fragments/footer.html :: footer}"></div>
+    </div>
+
 </div>
 </body>
 </html>

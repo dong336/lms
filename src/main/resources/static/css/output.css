@@ -1662,9 +1662,29 @@
       padding-right: calc(var(--spacing) * 60);
     }
   }
+  .lg\:pr-70 {
+    @media (width >= 64rem) {
+      padding-right: calc(var(--spacing) * 70);
+    }
+  }
+  .lg\:pr-80 {
+    @media (width >= 64rem) {
+      padding-right: calc(var(--spacing) * 80);
+    }
+  }
   .lg\:pl-60 {
     @media (width >= 64rem) {
       padding-left: calc(var(--spacing) * 60);
+    }
+  }
+  .lg\:pl-70 {
+    @media (width >= 64rem) {
+      padding-left: calc(var(--spacing) * 70);
+    }
+  }
+  .lg\:pl-80 {
+    @media (width >= 64rem) {
+      padding-left: calc(var(--spacing) * 80);
     }
   }
   .lg\:text-2xl {

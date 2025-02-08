@@ -10,8 +10,8 @@ public class GlobalControllerAdvice {
 
     @ModelAttribute
     public void addFullPath(HttpServletRequest request, Model model) {
-        String fullPath = request.getRequestURL().toString();
+        String commonUri = request.getRequestURI();
 
-        model.addAttribute("common_fullPath", fullPath);
+        model.addAttribute("commonUri", commonUri);
     }
 }
