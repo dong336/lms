@@ -4,14 +4,14 @@
 <div th:fragment="navbar">
     <nav x-data="{ mobileMenuIsOpen: false }" x-on:click.away="mobileMenuIsOpen = false" class="flex items-center justify-between border-b border-outline px-6 py-4 dark:border-outline-dark" aria-label="penguin ui menu">
         <!-- Brand Logo -->
-        <span class="lg:pl-80">
+        <span class="lg:pl-120">
             <a href="/" class="text-2xl font-bold text-on-surface-strong dark:text-on-surface-dark-strong">
                 <span>LM<span class="text-primary dark:text-primary-dark">S</span></span>
                 <!-- <img src="./your-logo.svg" alt="brand logo" class="w-10" /> -->
             </a>
         </span>
         <!-- Desktop Menu -->
-        <ul class="lg:pr-80 hidden items-center gap-4 md:flex">
+        <ul class="lg:pr-120 hidden items-center gap-4 md:flex">
             <!--<li><a href="#" class="font-bold text-primary underline-offset-2 hover:text-primary focus:outline-hidden focus:underline dark:text-primary-dark dark:hover:text-primary-dark" aria-current="page">기업소개</a></li>-->
             <li>
                 <a th:classappend="${commonUri == '/intro' ?

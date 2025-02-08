@@ -1672,6 +1672,16 @@
       padding-right: calc(var(--spacing) * 80);
     }
   }
+  .lg\:pr-100 {
+    @media (width >= 64rem) {
+      padding-right: calc(var(--spacing) * 100);
+    }
+  }
+  .lg\:pr-120 {
+    @media (width >= 64rem) {
+      padding-right: calc(var(--spacing) * 120);
+    }
+  }
   .lg\:pl-60 {
     @media (width >= 64rem) {
       padding-left: calc(var(--spacing) * 60);
@@ -1685,6 +1695,16 @@
   .lg\:pl-80 {
     @media (width >= 64rem) {
       padding-left: calc(var(--spacing) * 80);
+    }
+  }
+  .lg\:pl-100 {
+    @media (width >= 64rem) {
+      padding-left: calc(var(--spacing) * 100);
+    }
+  }
+  .lg\:pl-120 {
+    @media (width >= 64rem) {
+      padding-left: calc(var(--spacing) * 120);
     }
   }
   .lg\:text-2xl {
