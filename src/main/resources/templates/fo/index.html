@@ -10,6 +10,7 @@
     <p th:text="${common_fullPath}"></p>
 
     <div x-data="{
+          autoplayIntervalTime: 4000,
           slides: [
               {
                   imgSrc: 'https://penguinui.s3.amazonaws.com/component-assets/carousel/default-slide-1.webp',
@@ -37,6 +38,8 @@
               },
           ],
           currentSlideIndex: 1,
+          isPaused: false,
+          autoplayInterval: null,
           previous() {
               if (this.currentSlideIndex > 1) {
                   this.currentSlideIndex = this.currentSlideIndex - 1
@@ -53,7 +56,20 @@
                   this.currentSlideIndex = 1
               }
           },
-      }" class="relative w-full overflow-hidden">
+          autoplay() {
+              this.autoplayInterval = setInterval(() => {
+                  if (! this.isPaused) {
+                      this.next()
+                  }
+              }, this.autoplayIntervalTime)
+          },
+          // Updates interval time
+          setAutoplayInterval(newIntervalTime) {
+              clearInterval(this.autoplayInterval)
+              this.autoplayIntervalTime = newIntervalTime
+              this.autoplay()
+          },
+      }" x-init="autoplay" class="relative w-full overflow-hidden">
 
       <!-- previous button -->
       <button type="button" class="absolute left-5 top-1/2 z-20 flex rounded-full -translate-y-1/2 items-center justify-center bg-surface/40 p-2 text-on-surface transition hover:bg-surface/60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary active:outline-offset-0 dark:bg-surface-dark/40 dark:text-on-surface-dark dark:hover:bg-surface-dark/60 dark:focus-visible:outline-primary-dark" aria-label="previous slide" x-on:click="previous()">
@@ -95,9 +111,7 @@
       </div>
     </div>
 
-    <div class="content">
-      <div class="flex-shrink">
-      </div>
+    <div class="content flex-grow">
     </div>
 
     <div th:replace="~{/fo/fragments/footer.html :: footer}"></div>

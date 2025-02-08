@@ -24,7 +24,6 @@ public class GoogleOauth2Service {
         String accessToken = requestGoogleAccessToken(code);
         log.debug("accessToken : {}", accessToken);
 
-        // 로그아웃 개발하고 주석 해제
         JsonNode userResourceNode = getUserResource(accessToken);
 //        JsonNode userInfoNode = getUserInfo(accessToken);
 
@@ -46,7 +45,7 @@ public class GoogleOauth2Service {
         try {
             String clientId = env.googleClientId; // 클라이언트 ID
             String clientSecret = env.googleClientSecret; // 클라이언트 보안 패스워드
-            String tokenUri = "https://oauth2.googleapis.com/token";
+            String tokenUri = env.googleOauth2TokenUri;
 
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 
@@ -72,7 +71,7 @@ public class GoogleOauth2Service {
     }
 
     private JsonNode getUserResource(String accessToken) {
-        String resourceUri = "https://www.googleapis.com/oauth2/v2/userinfo";
+        String resourceUri = env.googleOauth2UserinfoUri;
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + accessToken);
@@ -81,19 +80,9 @@ public class GoogleOauth2Service {
         return restTemplate.exchange(resourceUri, HttpMethod.GET, entity, JsonNode.class).getBody();
     }
 
-    private JsonNode getUserInfo(String accessToken) {
-        String userInfoUri = "https://people.googleapis.com/v1/people/me?personFields=names,emailAddresses,photos,phoneNumbers";
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", "Bearer " + accessToken);
-        HttpEntity entity = new HttpEntity(headers);
-
-        return restTemplate.exchange(userInfoUri, HttpMethod.GET, entity, JsonNode.class).getBody();
-    }
-
     public void removeAccessToken(String accessToken) {
         try {
-            String tokenUri = UriComponentsBuilder.fromUriString("https://oauth2.googleapis.com/revoke")
+            String tokenUri = UriComponentsBuilder.fromUriString(env.googleOauth2RevokeUri)
                     .queryParam("token", accessToken)
                     .toUriString();
 

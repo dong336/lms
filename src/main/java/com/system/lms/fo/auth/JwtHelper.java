@@ -1,6 +1,8 @@
 package com.system.lms.fo.auth;
 
+import com.system.lms.fo.common.Env;
 import io.jsonwebtoken.*;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -12,13 +14,14 @@ import java.util.Map;
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class JwtHelper {
 
-    private static final String BASE_KEY = "thisisdummykeythisisdummykeythisisdummykeythisisdummykeythisisdummykey";
+    private final Env env;
     private static final SignatureAlgorithm SIGNATURE_ALGORITHM = SignatureAlgorithm.HS256;
 
     private Key createKey() {
-        byte[] apiKeySecretBytes = Base64.getDecoder().decode(BASE_KEY);
+        byte[] apiKeySecretBytes = Base64.getDecoder().decode(env.jwtKey);
         Key signingKey = new SecretKeySpec(apiKeySecretBytes, SIGNATURE_ALGORITHM.getJcaName());
 
         return signingKey;
@@ -49,7 +52,7 @@ public class JwtHelper {
     public Boolean checkJwt(String jwt) {
         try {
             Claims claims = Jwts.parserBuilder()
-                    .setSigningKey(Base64.getDecoder().decode(BASE_KEY))
+                    .setSigningKey(Base64.getDecoder().decode(env.jwtKey))
                     .build()
                     .parseClaimsJws(jwt)
                     .getBody();
@@ -68,7 +71,7 @@ public class JwtHelper {
     public JwtCustomClaims getJwtClaims(String jwt) {
         try {
             Claims claims = Jwts.parserBuilder()
-                    .setSigningKey(Base64.getDecoder().decode(BASE_KEY))
+                    .setSigningKey(Base64.getDecoder().decode(env.jwtKey))
                     .build()
                     .parseClaimsJws(jwt)
                     .getBody();

@@ -11,6 +11,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequiredArgsConstructor
 public class HomeController {
 
+    @GetMapping("/intro")
+    public String intro() { return "fo/intro"; }
+
+    @GetMapping("/courses")
+    public String courses() { return "fo/courses"; }
+
+    @GetMapping("/login")
+    public String login() { return "fo/login"; }
+
     @GetMapping("/")
     public String blank() { return "fo/index"; }
 
@@ -21,4 +30,7 @@ public class HomeController {
     public String home() {
         return "redirect:/";
     }
+
+    @GetMapping("/blank")
+    public String blank_() { return "fo/blank"; }
 }

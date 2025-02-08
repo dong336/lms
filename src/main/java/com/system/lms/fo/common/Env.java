@@ -33,6 +33,12 @@ public class Env {
     @Value("${google.read.scope.email.uri}")
     public String googleReadScopeEmailUri;
 
-    @Value("${google.read.scope.contacts.uri}")
-    public String googleReadScopeContactsUri;
+    @Value("${google.oauth2.token.uri}")
+    public String googleOauth2TokenUri;
+
+    @Value("${google.oauth2.userinfo.uri}")
+    public String googleOauth2UserinfoUri;
+
+    @Value("${google.oauth2.revoke.uri}")
+    public String googleOauth2RevokeUri;
 }
