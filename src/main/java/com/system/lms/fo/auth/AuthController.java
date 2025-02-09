@@ -1,8 +1,6 @@
 package com.system.lms.fo.auth;
 
-import com.system.lms.fo.client.EmailSender;
-import com.system.lms.fo.client.EmailValidator;
-import jakarta.servlet.http.Cookie;
+import com.system.lms.fo.auth.jwt.JwtHelper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -17,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Map;
-import java.util.Random;
 
 @Slf4j
 @Controller
@@ -26,115 +23,42 @@ import java.util.Random;
 public class AuthController {
 
     private final JwtHelper jwtHelper;
-
-    private final EmailValidator emailValidator;
-    private final EmailSender emailSender;
-
-    private final GoogleOauth2Service googleOauth2Service;
     private final AuthService authService;
 
     @GetMapping("/login")
     public String auth(@RequestParam Map<String, Object> param, HttpSession session, RedirectAttributes redirectAttributes) {
         String email = (String) param.get("email");
-        String[] parts = email.split("@");
 
-        boolean isValid = emailValidator.isValidDomain(parts[1]);
+        boolean isSent = authService.sendAuthCode(email, session);
 
-        if (isValid) {
-            Random random = new Random();
-            int pinNumber = 100000 + random.nextInt(900000);
-
-            String body = "안녕하세요. 회원인증 코드를 발송합니다.\n" + pinNumber;
-
-            emailSender.sendMessage(email, "회원 인증코드입니다.", body);
-
-            session.setAttribute("pinNumber", pinNumber + "");
-            session.setAttribute("email", email);
-
-            return "fo/login/auth";
+        if (isSent) {
+            return "fo/login/auth"; // 인증 페이지로 이동
         } else {
             redirectAttributes.addFlashAttribute("isInvalidEmail", true);
-
-            return "redirect:/login";
+            return "redirect:/login"; // 이메일이 유효하지 않을 경우 리다이렉트
         }
     }
 
     @GetMapping("/validate/{combinedNumber}")
     public String validate(@PathVariable String combinedNumber, HttpSession session, HttpServletRequest request, HttpServletResponse response, Model model) {
-        String pinNumber = (String) session.getAttribute("pinNumber");
-        String email = (String) session.getAttribute("email");
+        boolean isPinValid = authService.validatePinAndCreateJwt(combinedNumber, session, response);
 
-        if (pinNumber.equals(combinedNumber)) {
-            String jwtToken = jwtHelper.createJwt(new JwtCustomClaims("none", email, ""));
-
-            Cookie cookie = new Cookie("jwtToken", jwtToken);
-
-            cookie.setMaxAge(30000);
-            cookie.setPath("/");
-
-            response.addCookie(cookie);
-
-            return "redirect:/";
+        if (isPinValid) {
+            return "redirect:/"; // 핀 번호가 맞으면 메인 페이지로 리다이렉트
         } else {
             model.addAttribute("isFailPinNum", true);
 
-            session.invalidate();
+            // 세션 무효화 및 쿠키 삭제
+            authService.invalidateSessionAndDeleteCookies(session, request, response);
 
-            Cookie[] cookies = request.getCookies();
-            if (cookies != null) {
-                for (Cookie cookie : cookies) {
-                    if ("JSESSIONID".equals(cookie.getName())) {
-                        cookie.setMaxAge(0);
-                        cookie.setPath("/");
-                        response.addCookie(cookie);
-                    }
-                }
-            }
-
-            return "redirect:/login";
+            return "redirect:/login"; // 실패하면 로그인 페이지로 리다이렉트
         }
     }
 
     // logout 은 공통으로 처리하며 claims 를 검사하여 분기 처리
     @GetMapping("/logout")
     public String logout(HttpServletRequest request, HttpServletResponse response) {
-        HttpSession session = request.getSession(false); // 세션이 없다면 null
-        if (session != null) {
-            session.invalidate(); // 세션 무효화
-        }
-
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                switch (cookie.getName()) {
-                    case "JSESSIONID":
-                        // JSESSIONID 쿠키 삭제 처리
-                        cookie.setMaxAge(0);
-                        cookie.setPath("/");
-                        cookie.setHttpOnly(true);
-                        cookie.setSecure(false);
-                        response.addCookie(cookie);
-                        break;
-
-                    case "jwtToken":
-                        String jwtToken = cookie.getValue();
-                        JwtCustomClaims customClaims = jwtHelper.getJwtClaims(jwtToken);
-
-                        if ("google".equals(customClaims.snsType())) {
-                            String accessToken = customClaims.accessToken();
-                            googleOauth2Service.removeAccessToken(accessToken);
-                        }
-                        // jwtToken 쿠키 삭제 처리
-                        cookie.setMaxAge(0);
-                        cookie.setPath("/");
-                        cookie.setHttpOnly(true);
-                        cookie.setSecure(false);
-                        response.addCookie(cookie);
-                        break;
-                }
-            }
-        }
-
+        authService.logout(request, response);
 
         return "redirect:/";
     }

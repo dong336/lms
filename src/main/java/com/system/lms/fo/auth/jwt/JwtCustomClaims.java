@@ -1,4 +1,4 @@
-package com.system.lms.fo.auth;
+package com.system.lms.fo.auth.jwt;
 
 import java.util.Map;
 

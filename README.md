@@ -14,6 +14,7 @@
 4. HTML 탭 간격 2
 5. spring-boot-devtools IDE 환경에 맞게 적용 (권장)
 6. ui 컴포넌트 https://flowbite.com , www.penguinui.com 참고 (권장)
+7. 화면은 Thymeleaf, Spring 위주로 처리하되 CSR 요구되는 경우 Alpine 으로 처리
 
 ### 배포
 1. ./mvnw clean package

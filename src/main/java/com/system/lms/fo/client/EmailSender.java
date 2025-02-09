@@ -8,7 +8,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
+import javax.naming.Context;
+import javax.naming.NamingException;
+import javax.naming.directory.Attributes;
+import javax.naming.directory.DirContext;
+import javax.naming.directory.InitialDirContext;
 import java.io.UnsupportedEncodingException;
+import java.util.Hashtable;
 import java.util.Properties;
 
 @Slf4j
@@ -52,9 +58,27 @@ public class EmailSender {
 
 //          System.out.println("이메일이 성공적으로 전송되었습니다.");
         } catch (MessagingException e) {
-            e.printStackTrace();
+            String className = e.getStackTrace()[0].getClassName();
+            String methodName = e.getStackTrace()[0].getMethodName();
+
+            throw new RuntimeException(className + "." + methodName + "에서 예외 발생 : " + e.getMessage(), e);
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public boolean isValidDomain(String domain) {
+        try {
+            // DNS에서 MX 레코드 조회
+            Hashtable<String, String> env = new Hashtable<>();
+            env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.dns.DnsContextFactory");
+            DirContext ictx = new InitialDirContext(env);
+            Attributes attrs = ictx.getAttributes(domain, new String[]{"MX"});
+
+            // MX 레코드가 존재하는지 확인
+            return attrs.get("MX") != null;
+        } catch (NamingException e) {
+            return false;
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.system.lms.config;
+package com.system.lms.fo.config;
 
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;

@@ -1,8 +1,13 @@
-package com.system.lms.fo.auth;
+package com.system.lms.fo.auth.sns;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.google.api.client.json.Json;
+import com.system.lms.fo.auth.jwt.JwtCustomClaims;
+import com.system.lms.fo.auth.jwt.JwtHelper;
+import com.system.lms.fo.common.CookieBuilder;
 import com.system.lms.fo.common.Env;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
@@ -12,23 +17,25 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.time.LocalDateTime;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class GoogleOauth2Service {
 
     private final Env env;
-    private final RestTemplate restTemplate;
 
-    public String loginGoogle(String code) {
-        String accessToken = requestGoogleAccessToken(code);
+    private final RestTemplate restTemplate;
+    private final JwtHelper jwtHelper;
+
+    public void loginGoogle(HttpServletRequest request, HttpServletResponse response) {
+        String accessToken = requestGoogleAccessToken(request.getParameter("code"));
         log.debug("accessToken : {}", accessToken);
 
         JsonNode userResourceNode = getUserResource(accessToken);
-//        JsonNode userInfoNode = getUserInfo(accessToken);
 
         log.debug("userResourceNode : {}", userResourceNode);
-//        log.debug("userInfoNode : {}", userInfoNode);
 
         String id = userResourceNode.get("id").asText();
         String email = userResourceNode.get("email").asText();
@@ -38,7 +45,27 @@ public class GoogleOauth2Service {
         log.debug("email : {}", email);
         log.debug("nickname : {}", nickname);
 
-        return accessToken;
+        JwtCustomClaims customClaims = new JwtCustomClaims(SnsType.GOOGLE.getValue(), email, accessToken);
+
+        String jwtToken = jwtHelper.createJwt(customClaims);
+
+        Cookie jwtCookie = CookieBuilder.builder()
+                .name("jwtToken")
+                .value(jwtToken)
+                .maxAge(30000)
+                .path("/")
+                .httpOnly(true)
+                .build();
+        response.addCookie(jwtCookie);
+
+        Cookie lastLoginSnsCookie = CookieBuilder.builder()
+                .name("lastLoginSns")
+                .value(SnsType.GOOGLE.getValue())
+                .maxAge(315360000)
+                .path("/")
+//                .secure(true) TODO : TLS 적용 후에 주석 제거
+                .build();
+        response.addCookie(lastLoginSnsCookie);
     }
 
     private String requestGoogleAccessToken(String code) {
@@ -65,19 +92,28 @@ public class GoogleOauth2Service {
 
             return accessTokenNode.get("access_token").asText();
         } catch (RuntimeException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
+            String className = e.getStackTrace()[0].getClassName();
+            String methodName = e.getStackTrace()[0].getMethodName();
+
+            throw new RuntimeException(className + "." + methodName + "에서 예외 발생 : " + e.getMessage(), e);
         }
     }
 
     private JsonNode getUserResource(String accessToken) {
-        String resourceUri = env.googleOauth2UserinfoUri;
+        try {
+            String resourceUri = env.googleOauth2UserinfoUri;
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", "Bearer " + accessToken);
-        HttpEntity entity = new HttpEntity(headers);
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("Authorization", "Bearer " + accessToken);
+            HttpEntity entity = new HttpEntity(headers);
 
-        return restTemplate.exchange(resourceUri, HttpMethod.GET, entity, JsonNode.class).getBody();
+            return restTemplate.exchange(resourceUri, HttpMethod.GET, entity, JsonNode.class).getBody();
+        } catch (RuntimeException e) {
+            String className = e.getStackTrace()[0].getClassName();
+            String methodName = e.getStackTrace()[0].getMethodName();
+
+            throw new RuntimeException(className + "." + methodName + "에서 예외 발생 : " + e.getMessage(), e);
+        }
     }
 
     public void removeAccessToken(String accessToken) {
@@ -93,9 +129,12 @@ public class GoogleOauth2Service {
 
             ResponseEntity<JsonNode> responseNode = restTemplate.exchange(tokenUri, HttpMethod.POST, entity, JsonNode.class);
 
-            log.info("logout res node : {}", responseNode);
-        } catch (Exception e) {
-            e.printStackTrace();
+            log.debug("logout res node : {}", responseNode);
+        } catch (RuntimeException e) {
+            String className = e.getStackTrace()[0].getClassName();
+            String methodName = e.getStackTrace()[0].getMethodName();
+
+            throw new RuntimeException(className + "." + methodName + "에서 예외 발생 : " + e.getMessage(), e);
         }
     }
 }

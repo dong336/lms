@@ -1,4 +1,4 @@
-package com.system.lms.fo.auth;
+package com.system.lms.fo.auth.jwt;
 
 import com.system.lms.fo.common.Env;
 import io.jsonwebtoken.*;
