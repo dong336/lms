@@ -808,6 +808,9 @@
   .justify-end {
     justify-content: flex-end;
   }
+  .gap-1 {
+    gap: calc(var(--spacing) * 1);
+  }
   .gap-2 {
     gap: calc(var(--spacing) * 2);
   }
@@ -851,6 +854,9 @@
   }
   .rounded-radius {
     border-radius: var(--radius-radius);
+  }
+  .rounded-sm {
+    border-radius: var(--radius-sm);
   }
   .rounded-t-lg {
     border-top-left-radius: var(--radius-lg);
@@ -943,6 +949,9 @@
   .bg-surface-alt {
     background-color: var(--color-surface-alt);
   }
+  .bg-surface-alt\/40 {
+    background-color: color-mix(in oklab, var(--color-surface-alt) 40%, transparent);
+  }
   .bg-surface-alt\/60 {
     background-color: color-mix(in oklab, var(--color-surface-alt) 60%, transparent);
   }
@@ -973,6 +982,9 @@
   .object-cover {
     object-fit: cover;
   }
+  .p-1 {
+    padding: calc(var(--spacing) * 1);
+  }
   .p-2 {
     padding: calc(var(--spacing) * 2);
   }
@@ -990,6 +1002,9 @@
   }
   .px-2 {
     padding-inline: calc(var(--spacing) * 2);
+  }
+  .px-2\.5 {
+    padding-inline: calc(var(--spacing) * 2.5);
   }
   .px-3 {
     padding-inline: calc(var(--spacing) * 3);
@@ -1050,6 +1065,9 @@
   }
   .text-left {
     text-align: left;
+  }
+  .text-right {
+    text-align: right;
   }
   .text-2xl {
     font-size: var(--text-2xl);
@@ -1199,6 +1217,13 @@
       }
     }
   }
+  .hover\:bg-surface-alt\/75 {
+    &:hover {
+      @media (hover: hover) {
+        background-color: color-mix(in oklab, var(--color-surface-alt) 75%, transparent);
+      }
+    }
+  }
   .hover\:bg-surface\/60 {
     &:hover {
       @media (hover: hover) {
@@ -1273,6 +1298,11 @@
     &:focus {
       --tw-outline-style: none;
       outline-style: none;
+    }
+  }
+  .focus-visible\:bg-surface-alt\/75 {
+    &:focus-visible {
+      background-color: color-mix(in oklab, var(--color-surface-alt) 75%, transparent);
     }
   }
   .focus-visible\:underline {
@@ -1451,6 +1481,11 @@
       width: calc(1/2 * 100%);
     }
   }
+  .lg\:w-1\/6 {
+    @media (width >= 64rem) {
+      width: calc(1/6 * 100%);
+    }
+  }
   .lg\:w-\[80\%\] {
     @media (width >= 64rem) {
       width: 80%;
@@ -1471,16 +1506,6 @@
       padding-block: calc(var(--spacing) * 14);
     }
   }
-  .lg\:pr-120 {
-    @media (width >= 64rem) {
-      padding-right: calc(var(--spacing) * 120);
-    }
-  }
-  .lg\:pl-120 {
-    @media (width >= 64rem) {
-      padding-left: calc(var(--spacing) * 120);
-    }
-  }
   .lg\:text-2xl {
     @media (width >= 64rem) {
       font-size: var(--text-2xl);
@@ -1491,6 +1516,16 @@
     @media (width >= 64rem) {
       font-size: var(--text-3xl);
       line-height: var(--tw-leading, var(--text-3xl--line-height));
+    }
+  }
+  .xl\:pr-120 {
+    @media (width >= 80rem) {
+      padding-right: calc(var(--spacing) * 120);
+    }
+  }
+  .xl\:pl-120 {
+    @media (width >= 80rem) {
+      padding-left: calc(var(--spacing) * 120);
     }
   }
   .rtl\:text-right {
@@ -1585,6 +1620,11 @@
       background-color: var(--color-surface-dark-alt);
     }
   }
+  .dark\:bg-surface-dark-alt\/50 {
+    @media (prefers-color-scheme: dark) {
+      background-color: color-mix(in oklab, var(--color-surface-dark-alt) 50%, transparent);
+    }
+  }
   .dark\:bg-surface-dark\/20 {
     @media (prefers-color-scheme: dark) {
       background-color: color-mix(in oklab, var(--color-surface-dark) 20%, transparent);
@@ -1668,6 +1708,15 @@
       }
     }
   }
+  .dark\:hover\:bg-surface-dark-alt\/75 {
+    @media (prefers-color-scheme: dark) {
+      &:hover {
+        @media (hover: hover) {
+          background-color: color-mix(in oklab, var(--color-surface-dark-alt) 75%, transparent);
+        }
+      }
+    }
+  }
   .dark\:hover\:bg-surface-dark\/60 {
     @media (prefers-color-scheme: dark) {
       &:hover {
@@ -1720,6 +1769,13 @@
     @media (prefers-color-scheme: dark) {
       &:focus {
         --tw-ring-color: var(--color-neutral-600);
+      }
+    }
+  }
+  .dark\:focus-visible\:bg-surface-dark-alt\/75 {
+    @media (prefers-color-scheme: dark) {
+      &:focus-visible {
+        background-color: color-mix(in oklab, var(--color-surface-dark-alt) 75%, transparent);
       }
     }
   }

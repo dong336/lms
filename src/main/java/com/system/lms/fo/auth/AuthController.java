@@ -22,7 +22,6 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class AuthController {
 
-    private final JwtHelper jwtHelper;
     private final AuthService authService;
 
     @GetMapping("/login")

@@ -5,12 +5,10 @@ import org.springframework.stereotype.Component;
 
 /* 
  * 상수 코드 값으로 사용 할 목적으로
- *
  * read only 로 사용
- * 내부 속성 값을 어플리케이션에서 절대 수정하지 않도록 한다
  */
 @Component
-public class Env {
+public class CommonVO {
 
     @Value("${jwt.base.key}")
     public String jwtKey;
@@ -21,7 +19,7 @@ public class Env {
     @Value("${google.clientSecret}")
     public String googleClientSecret;
 
-    @Value("${google.redirect.uri}")
+    @Value("${google.oauth2.redirect.uri}")
     public String googleRedirectUri;
 
     @Value("${google.email.sender}")
@@ -48,7 +46,7 @@ public class Env {
     @Value("${google.oauth2.revoke.uri}")
     public String googleOauth2RevokeUri;
     
-    @Value("${kakao.redirect.uri}")
+    @Value("${kakao.oauth2.redirect.uri}")
     public String kakaoRedirectUri;
 
     @Value("${kakao.clientId}")
@@ -65,4 +63,26 @@ public class Env {
 
     @Value("${kakao.oauth2.revoke.uri}")
     public String kakaoOauth2RevokeUri;
+
+    @Value("${naver.oauth2.redirect.uri}")
+    public String naverOauth2RedirectUri;
+
+    @Value("${naver.oauth2.request.uri}")
+    public String naverOauth2RequestUri;
+
+    @Value("${naver.oauth2.token.uri}")
+    public String naverOauth2TokenUri;
+
+    @Value("${naver.oauth2.userinfo.uri}")
+    public String naverOauth2UserinfoUri;
+
+    @Value("${naver.oauth2.revoke.uri}")
+    public String naverOauth2RevokeUri;
+
+    @Value("${naver.clientId}")
+    public String naverClientId;
+
+    @Value("${naver.clientSecret}")
+    public String naverClientSecret;
+
 }

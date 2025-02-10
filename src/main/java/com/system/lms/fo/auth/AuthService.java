@@ -4,6 +4,8 @@ import com.system.lms.fo.auth.jwt.JwtCustomClaims;
 import com.system.lms.fo.auth.jwt.JwtHelper;
 import com.system.lms.fo.auth.sns.GoogleOauth2Service;
 import com.system.lms.fo.auth.sns.KakaoOauth2Service;
+import com.system.lms.fo.auth.sns.NaverOauth2Service;
+import com.system.lms.fo.auth.sns.SnsType;
 import com.system.lms.fo.client.EmailSender;
 import com.system.lms.fo.common.CookieBuilder;
 import jakarta.servlet.http.Cookie;
@@ -26,6 +28,7 @@ public class AuthService {
 
     private final GoogleOauth2Service googleOauth2Service;
     private final KakaoOauth2Service kakaoOauth2Service;
+    private final NaverOauth2Service naverOauth2Service;
 
     public boolean validatePinAndCreateJwt(String combinedNumber, HttpSession session, HttpServletResponse response) {
         String pinNumber = (String) session.getAttribute("pinNumber");
@@ -116,17 +119,14 @@ public class AuthService {
                         String accessToken = customClaims.accessToken();
                         String snsType = customClaims.snsType();
 
-                        switch (snsType) {
-                            case "google":
-                                googleOauth2Service.removeAccessToken(accessToken);
-                                break;
-
-                            case "kakao":
-                                kakaoOauth2Service.removeAccessToken(accessToken);
-                                break;
-
-                            default:
-                                break;
+                        if (snsType.equals(SnsType.GOOGLE.getValue())) {
+                            googleOauth2Service.removeAccessToken(accessToken);
+                        }
+                        else if (snsType.equals(SnsType.KAKAO.getValue())) {
+                            kakaoOauth2Service.removeAccessToken(accessToken);
+                        }
+                        else if (snsType.equals(SnsType.NAVER.getValue())) {
+                            naverOauth2Service.removeAccessToken(accessToken);
                         }
 
                         cookie.setMaxAge(0);

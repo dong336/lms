@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.system.lms.fo.auth.jwt.JwtCustomClaims;
 import com.system.lms.fo.auth.jwt.JwtHelper;
 import com.system.lms.fo.common.CookieBuilder;
-import com.system.lms.fo.common.Env;
+import com.system.lms.fo.common.CommonVO;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -17,14 +17,12 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.time.LocalDateTime;
-
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class KakaoOauth2Service {
 
-    private final Env env;
+    private final CommonVO commonVO;
 
     private final RestTemplate restTemplate;
     private final JwtHelper jwtHelper;
@@ -65,9 +63,9 @@ public class KakaoOauth2Service {
 
     private String requestKaKaoAccessToken(String code) {
         try {
-            String tokenUri = env.kakaoOauth2TokenUri;
-            String clientId = env.kakaoClientId;
-            String redirectUri = env.kakaoRedirectUri;
+            String tokenUri = commonVO.kakaoOauth2TokenUri;
+            String clientId = commonVO.kakaoClientId;
+            String redirectUri = commonVO.kakaoRedirectUri;
 
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 
@@ -95,7 +93,7 @@ public class KakaoOauth2Service {
 
     private JsonNode getUserinfo(String accessToken) {
         try {
-            String userinfoUri = env.kakaoOauth2UserinfoUri;
+            String userinfoUri = commonVO.kakaoOauth2UserinfoUri;
 
             HttpHeaders headers = new HttpHeaders();
             headers.set("Authorization", "Bearer " + accessToken);
@@ -112,7 +110,7 @@ public class KakaoOauth2Service {
 
     public void removeAccessToken(String accessToken) {
         try {
-            String revokeTokenUri = UriComponentsBuilder.fromUriString(env.kakaoOauth2RevokeUri)
+            String revokeTokenUri = UriComponentsBuilder.fromUriString(commonVO.kakaoOauth2RevokeUri)
                     .queryParam("target_id_type", "user_id")
                     .toUriString();
 

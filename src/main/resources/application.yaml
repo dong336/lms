@@ -1,3 +1,9 @@
-spring.application.name: lms
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  config-location: classpath:config/mybatis-config.xml
 
-server.port: 8080
+logging:
+  config: classpath:config/logback-config.xml
+
+spring:
+  application.name: lms

@@ -7,7 +7,7 @@
 
     <div th:replace="~{/fo/fragments/navbar.html :: navbar}"></div>
 
-    <div class="lg:pl-120 lg:pr-120">
+    <div class="xl:pl-120 xl:pr-120">
         <p th:text="${commonUri}"></p>
 
         <div class="content">
@@ -24,7 +24,7 @@
                             <a th:href="@{/about/notice}" class="inline-block p-4 text-primary border-b-2 border-primary rounded-t-lg active dark:text-primary dark:border-primary" aria-current="page">공지사항</a>
                         </li>
                         <li class="me-2">
-                            <a th:href="@{/about/qna}" class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300">Q&A</a>
+                            <a th:href="@{/about/qnaList}" class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300">Q&A</a>
                         </li>
                     </ul>
                 </div>

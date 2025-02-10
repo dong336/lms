@@ -1,6 +1,6 @@
 package com.system.lms.fo.auth.jwt;
 
-import com.system.lms.fo.common.Env;
+import com.system.lms.fo.common.CommonVO;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +17,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class JwtHelper {
 
-    private final Env env;
+    private final CommonVO env;
     private static final SignatureAlgorithm SIGNATURE_ALGORITHM = SignatureAlgorithm.HS256;
 
     private Key createKey() {

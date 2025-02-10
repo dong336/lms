@@ -1,6 +1,6 @@
 package com.system.lms.fo.client;
 
-import com.system.lms.fo.common.Env;
+import com.system.lms.fo.common.CommonVO;
 import jakarta.mail.*;
 import jakarta.mail.internet.*;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +22,7 @@ import java.util.Properties;
 @RequiredArgsConstructor
 public class EmailSender {
 
-    private final Env env;
+    private final CommonVO env;
 
     // TODO 기다리는게 나을 수도...?
     @Async

@@ -1,5 +1,6 @@
 package com.system.lms.fo.controller;
 
+import com.system.lms.fo.common.CommonVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequiredArgsConstructor
 public class HomeController {
+
+    private final CommonVO commonVO;
 
     @GetMapping("/intro")
     public String intro() { return "fo/intro"; }

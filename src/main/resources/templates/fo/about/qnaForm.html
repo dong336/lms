@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{/fo/fragments/head.html :: page_head('LMS 교육과정')}">
+</head>
+<body>
+<div id="app">
+
+  <div th:replace="~{/fo/fragments/navbar.html :: navbar}"></div>
+
+  <div class="xl:pl-120 xl:pr-120">
+    <p th:text="${commonUri}"></p>
+
+    <div class="content">
+      <div class="flex-grow">
+        <div class="bg-primary shadow-2xl rounded-lg p-6">
+          <h1 class="text-xl text-white">이용안내</h1>
+        </div>
+        <div class="text-sm font-medium text-center border-b border-outline border-gray-200 dark:text-gray-400 dark:border-gray-700">
+          <ul class="flex flex-wrap -mb-px">
+            <li class="me-2">
+              <a th:href="@{/about/faq}" class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300">FAQ</a>
+            </li>
+            <li class="me-2">
+              <a th:href="@{/about/notice}" class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300">공지사항</a>
+            </li>
+            <li class="me-2">
+              <a th:href="@{/about/qnaList}" class="inline-block p-4 text-primary border-b-2 border-primary rounded-t-lg active dark:text-primary dark:border-primary">Q&A</a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="flex w-full flex-col gap-1 text-on-surface dark:text-on-surface-dark">
+          <label for="textInputDefault" class="w-fit pl-0.5 text-sm">제목</label>
+          <input id="textInputDefault" type="text" class="w-full rounded-radius border border-outline bg-surface-alt px-2 py-2 text-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-not-allowed disabled:opacity-75 dark:border-outline-dark dark:bg-surface-dark-alt/50 dark:focus-visible:outline-primary-dark" name="name" placeholder="제목" autocomplete="name"/>
+        </div>
+
+        <div class="mb-2 flex w-full flex-col gap-1 text-on-surface dark:text-on-surface-dark">
+          <label for="textArea" class="w-fit pl-0.5 text-sm">내용</label>
+          <textarea id="textArea" class="w-full rounded-radius border border-outline bg-surface-alt px-2.5 py-2 text-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-not-allowed disabled:opacity-75 dark:border-outline-dark dark:bg-surface-dark-alt/50 dark:focus-visible:outline-primary-dark" rows="3" placeholder="내용"></textarea>
+        </div>
+
+        <div class="text-right">
+          <button type="button" class="whitespace-nowrap rounded-radius bg-surface-alt border border-surface-alt px-4 py-2 text-sm font-medium tracking-wide text-on-surface-strong transition hover:opacity-75 text-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-surface-alt active:opacity-100 active:outline-offset-0 disabled:opacity-75 disabled:cursor-not-allowed dark:bg-surface-dark-alt dark:border-surface-dark-alt dark:text-on-surface-dark-strong dark:focus-visible:outline-surface-dark-alt">취소</button>
+          <button type="button" class="whitespace-nowrap rounded-radius bg-primary border border-primary px-4 py-2 text-sm font-medium tracking-wide text-on-primary transition hover:opacity-75 text-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary active:opacity-100 active:outline-offset-0 disabled:opacity-75 disabled:cursor-not-allowed dark:bg-primary-dark dark:border-primary-dark dark:text-on-primary-dark dark:focus-visible:outline-primary-dark">등록</button>
+        </div>
+      </div>
+    </div>
+
+    <div th:replace="~{/fo/fragments/footer.html :: footer}"></div>
+  </div>
+
+</div>
+<script>
+
+</script>
+</body>
+</html>

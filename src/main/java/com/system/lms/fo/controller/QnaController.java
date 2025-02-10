@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 @RequiredArgsConstructor
 public class QnaController {
 
-    @GetMapping("/about/qna")
-    public String qna() { return "fo/about/qna"; }
+    @GetMapping("/about/qnaList")
+    public String qna() { return "fo/about/qnaList"; }
+
+    @GetMapping("/about/qnaForm")
+    public String qnaForm() { return "fo/about/qnaForm"; }
 }
