@@ -550,6 +550,9 @@
   }
 }
 @layer utilities {
+  .pointer-events-none {
+    pointer-events: none;
+  }
   .absolute {
     position: absolute;
   }
@@ -858,9 +861,6 @@
   .rounded-radius {
     border-radius: var(--radius-radius);
   }
-  .rounded-sm {
-    border-radius: var(--radius-sm);
-  }
   .rounded-t-lg {
     border-top-left-radius: var(--radius-lg);
     border-top-right-radius: var(--radius-lg);
@@ -951,9 +951,6 @@
   }
   .bg-surface-alt {
     background-color: var(--color-surface-alt);
-  }
-  .bg-surface-alt\/40 {
-    background-color: color-mix(in oklab, var(--color-surface-alt) 40%, transparent);
   }
   .bg-surface-alt\/60 {
     background-color: color-mix(in oklab, var(--color-surface-alt) 60%, transparent);
@@ -1153,14 +1150,14 @@
   .uppercase {
     text-transform: uppercase;
   }
-  .underline {
-    text-decoration-line: underline;
-  }
   .underline-offset-2 {
     text-underline-offset: 2px;
   }
   .opacity-0 {
     opacity: 0%;
+  }
+  .opacity-50 {
+    opacity: 50%;
   }
   .opacity-100 {
     opacity: 100%;
@@ -1217,13 +1214,6 @@
     &:hover {
       @media (hover: hover) {
         border-color: var(--color-gray-300);
-      }
-    }
-  }
-  .hover\:bg-surface-alt\/75 {
-    &:hover {
-      @media (hover: hover) {
-        background-color: color-mix(in oklab, var(--color-surface-alt) 75%, transparent);
       }
     }
   }
@@ -1301,11 +1291,6 @@
     &:focus {
       --tw-outline-style: none;
       outline-style: none;
-    }
-  }
-  .focus-visible\:bg-surface-alt\/75 {
-    &:focus-visible {
-      background-color: color-mix(in oklab, var(--color-surface-alt) 75%, transparent);
     }
   }
   .focus-visible\:underline {
@@ -1711,15 +1696,6 @@
       }
     }
   }
-  .dark\:hover\:bg-surface-dark-alt\/75 {
-    @media (prefers-color-scheme: dark) {
-      &:hover {
-        @media (hover: hover) {
-          background-color: color-mix(in oklab, var(--color-surface-dark-alt) 75%, transparent);
-        }
-      }
-    }
-  }
   .dark\:hover\:bg-surface-dark\/60 {
     @media (prefers-color-scheme: dark) {
       &:hover {
@@ -1772,13 +1748,6 @@
     @media (prefers-color-scheme: dark) {
       &:focus {
         --tw-ring-color: var(--color-neutral-600);
-      }
-    }
-  }
-  .dark\:focus-visible\:bg-surface-dark-alt\/75 {
-    @media (prefers-color-scheme: dark) {
-      &:focus-visible {
-        background-color: color-mix(in oklab, var(--color-surface-dark-alt) 75%, transparent);
       }
     }
   }

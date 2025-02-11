@@ -2,22 +2,27 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
 <!-- pagination.html -->
-<div th:fragment="pagination" class="flex justify-center">
+<div th:fragment="pagination" class="mt-4 flex justify-center">
     <nav aria-label="pagination">
         <ul class="flex shrink-0 items-center gap-2 text-sm font-medium">
-            <!-- Previous 버튼 -->
+            <!-- First page 버튼 -->
             <li>
-                <a th:if="${currentPage > 1}"
-                   th:href="@{${commonUri}(page=${currentPage - 1}, size=${pageSize})}"
+                <a th:href="@{${commonUri}(page=1)}"
+                   th:class="${pagination.currentPage == 1} ? 'pointer-events-none opacity-50' : ''"
                    class="flex items-center rounded-radius p-1 text-on-surface hover:text-primary dark:text-on-surface-dark dark:hover:text-primary-dark"
-                   aria-label="previous page">
+                   aria-label="first page">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="size-6">
-                        <path fill-rule="evenodd" d="M11.78 5.22a.75.75 0 0 1 0 1.06L8.06 10l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd" />
+                        <path fill-rule="evenodd" d="M10.78 5.22a.75.75 0 0 1 0 1.06L7.06 10l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25a.75.75 0 0 1 1.06 0Zm5 0a.75.75 0 0 1 0 1.06L12.06 10l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd"/>
                     </svg>
                 </a>
-                <a th:if="${currentPage == 1}"
-                   class="flex items-center rounded-radius p-1 text-gray-500 cursor-not-allowed"
-                   aria-label="previous page (disabled)">
+            </li>
+
+            <!-- Previous 버튼 -->
+            <li>
+                <a th:href="@{${commonUri}(page=${pagination.currentPage - 1})}"
+                   th:class="${pagination.currentPage == 1} ? 'pointer-events-none opacity-50' : ''"
+                   class="flex items-center rounded-radius p-1 text-on-surface hover:text-primary dark:text-on-surface-dark dark:hover:text-primary-dark"
+                   aria-label="previous page">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="size-6">
                         <path fill-rule="evenodd" d="M11.78 5.22a.75.75 0 0 1 0 1.06L8.06 10l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd" />
                     </svg>
@@ -25,29 +30,34 @@
             </li>
 
             <!-- 페이지 번호들 -->
-            <li th:each="i : ${#numbers.sequence(1, totalPages)}">
-                <a th:href="@{${commonUri}(page=${i}, size=${pageSize})}"
+            <li th:each="i : ${#numbers.sequence(pagination.startPage, pagination.endPage, 1)}">
+                <a th:href="@{${commonUri}(page=${i})}"
                    th:text="${i}"
-                   th:class="${i == currentPage ? 'flex size-6 items-center justify-center rounded-radius bg-primary p-1 font-bold text-on-primary dark:bg-primary-dark dark:text-on-primary-dark' : 'flex size-6 items-center justify-center rounded-radius p-1 text-on-surface hover:text-primary dark:text-on-surface-dark dark:hover:text-primary-dark'}"
+                   th:class="${i == pagination.currentPage ? 'flex size-6 items-center justify-center rounded-radius bg-primary p-1 font-bold text-on-primary dark:bg-primary-dark dark:text-on-primary-dark' : 'flex size-6 items-center justify-center rounded-radius p-1 text-on-surface hover:text-primary dark:text-on-surface-dark dark:hover:text-primary-dark'}"
                    aria-label="page ${i}"
-                   th:aria-current="${i == currentPage ? 'page' : null}"></a>
+                   th:aria-current="${i == pagination.currentPage ? 'page' : null}"></a>
             </li>
 
             <!-- Next 버튼 -->
             <li>
-                <a th:if="${currentPage < totalPages}"
-                   th:href="@{${commonUri}(page=${currentPage + 1}, size=${pageSize})}"
+                <a th:href="@{${commonUri}(page=${pagination.currentPage + 1})}"
+                   th:class="${pagination.currentPage == pagination.totalPages} ? 'pointer-events-none opacity-50' : ''"
                    class="flex items-center rounded-radius p-1 text-on-surface hover:text-primary dark:text-on-surface-dark dark:hover:text-primary-dark"
                    aria-label="next page">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="size-6">
                         <path fill-rule="evenodd" d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
                     </svg>
                 </a>
-                <a th:if="${currentPage == totalPages}"
-                   class="flex items-center rounded-radius p-1 text-gray-500 cursor-not-allowed"
-                   aria-label="next page (disabled)">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="size-6">
-                        <path fill-rule="evenodd" d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
+            </li>
+
+            <!-- Last page 버튼 -->
+            <li>
+                <a th:href="@{${commonUri}(page=${pagination.totalPages})}"
+                   th:class="${pagination.currentPage == pagination.totalPages} ? 'pointer-events-none opacity-50' : ''"
+                   class="flex items-center rounded-radius p-1 text-on-surface hover:text-primary dark:text-on-surface-dark dark:hover:text-primary-dark"
+                   aria-label="last page">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                        <path d="M6.293 4.707a1 1 0 0 1 1.414 0L14 11l-6.293 6.293a1 1 0 1 1-1.414-1.414L11.172 11 6.293 6.121a1 1 0 0 1 0-1.414Zm6 0a1 1 0 0 1 1.414 0L20 11l-6.293 6.293a1 1 0 0 1-1.414-1.414L17.172 11 12.293 6.121a1 1 0 0 1 0-1.414Z"/>
                     </svg>
                 </a>
             </li>

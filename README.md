@@ -21,5 +21,5 @@
 2. java -jar -Dspring.profiles.active=dev target/lms-0.0.1-SNAPSHOT.jar
 
 ### Docker
-1. 아티팩트를 대상으로 수동으로 도커 명령어로 진행
+1. 아티팩트를 수동 도커 명령어로 진행
 2. 추후 배포 스크립트 추가 예정

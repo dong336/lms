@@ -2,21 +2,23 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.system.lms.fo.mapper.FaqMapper">
-    <select id="selectFaqByPaging" parameterType="map" resultType="map">
+<mapper namespace="com.system.lms.fo.mapper.NoticeMapper">
+    <select id="selectNoticeByPaging">
         SELECT
             id,
-            question,
-            answer
-        FROM t_faq
-        WHERE is_deleted = 0
+            title,
+            hits
+        FROM
+            t_notice
+        WHERE
+            is_deleted = 0
         ORDER BY id DESC
         LIMIT #{limit} OFFSET #{offset}
     </select>
 
-    <select id="selectFaqCount" resultType="int">
+    <select id="selectNoticeCount" resultType="int">
         SELECT COUNT(*)
-        FROM t_faq
+        FROM t_notice
         WHERE is_deleted = 0
     </select>
 </mapper>

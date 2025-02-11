@@ -30,14 +30,6 @@
                 </a>
             </li>
             <li>
-                <a th:classappend="${commonUri == '/comunity' ?
-                        'font-bold text-primary underline-offset-2 hover:text-primary focus:outline-hidden focus:underline dark:text-primary-dark dark:hover:text-primary-dark' :
-                        'font-medium text-on-surface underline-offset-2 hover:text-primary focus:outline-hidden focus:underline dark:text-on-surface-dark dark:hover:text-primary-dark'}"
-                   th:href="@{/comunity}">
-                    커뮤니티
-                </a>
-            </li>
-            <li>
                 <a th:classappend="${commonUri.contains('about') ?
                         'font-bold text-primary underline-offset-2 hover:text-primary focus:outline-hidden focus:underline dark:text-primary-dark dark:hover:text-primary-dark' :
                         'font-medium text-on-surface underline-offset-2 hover:text-primary focus:outline-hidden focus:underline dark:text-on-surface-dark dark:hover:text-primary-dark'}"

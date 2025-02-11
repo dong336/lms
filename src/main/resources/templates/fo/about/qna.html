@@ -12,10 +12,10 @@
 
         <div class="content">
             <div class="flex-grow">
-                <div class="bg-primary shadow-2xl rounded-lg p-6">
+                <div class="bg-primary shadow-2xl rounded-lg p-6 mb-2">
                     <h1 class="text-xl text-white">이용안내</h1>
                 </div>
-                <div class="text-sm font-medium text-center border-b border-outline border-gray-200 dark:text-gray-400 dark:border-gray-700">
+                <div class="mb-2 text-sm font-medium text-center border-b border-outline border-gray-200 dark:text-gray-400 dark:border-gray-700">
                     <ul class="flex flex-wrap -mb-px">
                         <li class="me-2">
                             <a th:href="@{/about/faq}" class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300">FAQ</a>
@@ -24,12 +24,16 @@
                             <a th:href="@{/about/notice}" class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300">공지사항</a>
                         </li>
                         <li class="me-2">
-                            <a th:href="@{/about/qnaList}" class="inline-block p-4 text-primary border-b-2 border-primary rounded-t-lg active dark:text-primary dark:border-primary">Q&A</a>
+                            <a th:href="@{/about/qna}" class="inline-block p-4 text-primary border-b-2 border-primary rounded-t-lg active dark:text-primary dark:border-primary">Q&A</a>
                         </li>
                     </ul>
                 </div>
 
-                <div class="mb-2 relative overflow-x-auto">
+                <div th:if="${qnaList == null or #lists.isEmpty(qnaList)}">
+                    <p class="text-center">Q&A 가 없습니다.</p>
+                </div>
+                <div th:unless="${qnaList == null or #lists.isEmpty(qnaList)}"
+                     class="mb-2 relative overflow-x-auto">
                     <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
@@ -42,31 +46,24 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
-                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                질문있어요
+                        <tr th:each="item : ${qnaList}"
+                            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
+                            <th th:text="${item.title}" scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             </th>
-                            <td class="px-6 py-4">
-                                test@test.com
-                            </td>
-                        </tr>
-                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
-                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                뭘까요?
-                            </th>
-                            <td class="px-6 py-4">
-                                dasds@dasd.com
-                            </td>
+                            <td th:text="${item.writer}" class="px-6 py-4"></td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
 
                 <div class="text-right">
-                   <button id="qnaFormBtn" type="button" class="whitespace-nowrap rounded-radius bg-primary border border-primary px-4 py-2 text-sm font-medium tracking-wide text-on-primary transition hover:opacity-75 text-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary active:opacity-100 active:outline-offset-0 disabled:opacity-75 disabled:cursor-not-allowed dark:bg-primary-dark dark:border-primary-dark dark:text-on-primary-dark dark:focus-visible:outline-primary-dark">글쓰기</button>
+                   <button id="qnaFormBtn" type="button" class="whitespace-nowrap rounded-radius bg-primary border border-primary px-4 py-2 text-sm font-medium tracking-wide text-on-primary transition hover:opacity-75 text-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary active:opacity-100 active:outline-offset-0 disabled:opacity-75 disabled:cursor-not-allowed dark:bg-primary-dark dark:border-primary-dark dark:text-on-primary-dark dark:focus-visible:outline-primary-dark">
+                       글쓰기
+                   </button>
                 </div>
             </div>
         </div>
+        <div th:replace="~{/fo/fragments/pagination.html :: pagination}"></div>
 
         <div th:replace="~{/fo/fragments/footer.html :: footer}"></div>
     </div>
@@ -78,8 +75,15 @@ window.onload = () => {
     const qnaFormBtn = document.getElementById('qnaFormBtn');
 
     qnaFormBtn.addEventListener('click', () => {
-        window.location.href = '/about/qnaForm';
+        const isLogin = [[${isLogin}]];
+
+        if (isLogin) {
+            window.location.href = '/about/qnaForm';
+        } else {
+            alert('로그인 해주세요.');
+        }
     });
+
 }
 </script>
 </body>

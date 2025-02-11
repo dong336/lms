@@ -50,7 +50,7 @@ public class GoogleOauth2Service {
         Cookie jwtCookie = CookieBuilder.builder()
                 .name("jwtToken")
                 .value(jwtToken)
-                .maxAge(30000)
+                .maxAge(60 * 60 * 24)
                 .path("/")
                 .httpOnly(true)
                 .build();
@@ -59,7 +59,7 @@ public class GoogleOauth2Service {
         Cookie lastLoginSnsCookie = CookieBuilder.builder()
                 .name("lastLoginSns")
                 .value(SnsType.GOOGLE.getValue())
-                .maxAge(315360000)
+                .maxAge(60 * 60 * 24)
                 .path("/")
 //                .secure(true) TODO : TLS 적용 후에 주석 제거
                 .build();

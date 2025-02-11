@@ -10,5 +10,5 @@ public interface FaqMapper {
 
     List<Map<String, Object>> selectFaqByPaging(Map<String, Object> params);
 
-    Long selectFaqCount();
+    Integer selectFaqCount();
 }

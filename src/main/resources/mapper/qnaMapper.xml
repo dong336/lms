@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.system.lms.fo.mapper.QnaMapper">
+    <select id="selectQnaByPaging">
+        SELECT
+            id,
+            title,
+            writer
+        FROM t_qna
+        WHERE is_deleted = 0
+        ORDER BY id DESC
+        LIMIT #{limit} OFFSET #{offset}
+    </select>
+
+    <select id="selectQnaCount" resultType="int">
+        SELECT COUNT(*)
+        FROM t_qna
+        WHERE is_deleted = 0
+    </select>
+
+    <insert id="insertQna" parameterType="map">
+        INSERT INTO t_qna (title, content, writer)
+        VALUES (#{title}, #{content}, #{writer})
+    </insert>
+</mapper>

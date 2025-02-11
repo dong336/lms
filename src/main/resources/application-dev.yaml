@@ -12,5 +12,9 @@ spring:
       connection-timeout: 30000
       max-lifetime: 1800000
 
+  thymeleaf.cache: false
+  thymeleaf.prefix: file:src/main/resources/templates/
+  web.resources.static-locations: file:src/main/resources/static/
+
 server:
   port: 8080

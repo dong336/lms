@@ -1,5 +1,6 @@
 package com.system.lms.fo.controller;
 
+import com.system.lms.fo.common.CommonVO;
 import com.system.lms.fo.service.FaqService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,9 +19,8 @@ public class FaqController {
     @GetMapping("/about/faq")
     public String faq(
             @RequestParam(value = "page", required = false) String page,
-            @RequestParam(value = "size", required = false) String size,
             Model model) {
-        faqService.viewFaqList(page, size, model);
+        faqService.viewFaqList(page, model);
 
         return "fo/about/faq";
     }
